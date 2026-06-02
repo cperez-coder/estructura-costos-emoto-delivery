@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estructura de costos · Alquiler de motos eléctricas para delivery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0d0b;
+    --bg2:#0f1310;
+    --surface:#141a15;
+    --surface2:#1a2118;
+    --line:#283026;
+    --ink:#eef3e9;
+    --muted:#8b958380;
+    --muted2:#97a18f;
+    --lime:#c8f94e;
+    --lime-d:#9fd420;
+    --cyan:#46d8c8;
+    --amber:#ff9b42;
+    --red:#ff5d52;
+    --blue:#6e8cff;
+    --violet:#b07cff;
+    --pink:#ff6fae;
+    --yellow:#ffe14d;
+    --teal:#3fb6a0;
+    --olive:#a8b15a;
+    --grey:#6c766a;
+    --radius:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Hanken Grotesk',system-ui,sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  /* atmosphere */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(900px 500px at 82% -8%, rgba(200,249,78,.10), transparent 60%),
+      radial-gradient(700px 500px at -10% 12%, rgba(70,216,200,.07), transparent 55%),
+      radial-gradient(600px 600px at 50% 120%, rgba(176,124,255,.06), transparent 60%);
+  }
+  body::after{
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:0 24px}
+  mono,.mono{font-family:'JetBrains Mono',monospace;font-feature-settings:"tnum"}
+
+  /* NAV */
+  nav{
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(14px);
+    background:rgba(10,13,11,.72);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-in{max-width:1180px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Bricolage Grotesque';font-weight:700;letter-spacing:-.02em}
+  .brand .dot{width:11px;height:11px;border-radius:50%;background:var(--lime);box-shadow:0 0 14px var(--lime);animation:pulse 2.4s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .nav-links{display:flex;gap:6px;flex-wrap:wrap}
+  .nav-links a{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted2);
+    text-decoration:none;padding:6px 11px;border-radius:8px;transition:.2s;white-space:nowrap;
+  }
+  .nav-links a:hover{color:var(--lime);background:var(--surface)}
+  @media(max-width:820px){.nav-links{display:none}}
+
+  /* HERO */
+  header{padding:72px 0 40px;position:relative}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--lime-d);margin-bottom:22px;
+  }
+  h1{
+    font-family:'Bricolage Grotesque';font-weight:800;letter-spacing:-.035em;line-height:.96;
+    font-size:clamp(40px,8.5vw,92px);
+  }
+  h1 .glow{color:var(--lime);text-shadow:0 0 40px rgba(200,249,78,.35)}
+  .lede{max-width:680px;margin-top:24px;font-size:clamp(16px,2.1vw,20px);color:var(--muted2)}
+  .lede b{color:var(--ink);font-weight:600}
+  .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:48px}
+  @media(max-width:760px){.stat-row{grid-template-columns:repeat(2,1fr)}}
+  .stat{
+    background:linear-gradient(180deg,var(--surface),var(--bg2));
+    border:1px solid var(--line);border-radius:var(--radius);padding:20px 18px;position:relative;overflow:hidden;
+  }
+  .stat .k{font-family:'Bricolage Grotesque';font-weight:700;font-size:clamp(26px,4vw,38px);letter-spacing:-.03em}
+  .stat .l{font-size:12.5px;color:var(--muted2);margin-top:4px}
+  .stat::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:100%;background:linear-gradient(90deg,var(--lime),transparent)}
+
+  /* SECTIONS */
+  section{padding:66px 0;border-top:1px solid var(--line);position:relative}
+  .sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:8px}
+  .sec-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--lime-d);padding-top:6px}
+  h2{font-family:'Bricolage Grotesque';font-weight:700;letter-spacing:-.03em;font-size:clamp(28px,4.6vw,46px);line-height:1.02}
+  .sec-sub{color:var(--muted2);max-width:720px;margin:14px 0 34px;font-size:16px}
+  .sec-sub code{font-family:'JetBrains Mono',monospace;background:var(--surface2);padding:1px 7px;border-radius:5px;font-size:13px;color:var(--lime)}
+
+  /* method banner */
+  .banner{
+    display:flex;gap:16px;align-items:flex-start;
+    background:linear-gradient(120deg,rgba(255,155,66,.08),rgba(20,26,21,.4));
+    border:1px solid #3a3322;border-radius:var(--radius);padding:20px 22px;margin-top:30px;
+  }
+  .banner .ico{font-size:20px;line-height:1.2}
+  .banner p{font-size:14.5px;color:var(--muted2)}
+  .banner b{color:var(--ink)}
+
+  /* TABLES */
+  .tbl{width:100%;border-collapse:collapse;margin-top:10px;font-size:14.5px}
+  .tbl th{
+    text-align:left;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--muted2);font-weight:500;padding:12px 14px;border-bottom:1px solid var(--line);
+  }
+  .tbl td{padding:13px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  .tbl tr:hover td{background:var(--surface)}
+  .tbl .name{font-weight:600;color:var(--ink)}
+  .tbl .num{font-family:'JetBrains Mono',monospace;color:var(--lime);white-space:nowrap}
+  .tbl .sm{font-size:13px;color:var(--muted2)}
+  .tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10.5px;padding:2px 7px;border-radius:5px;border:1px solid var(--line);color:var(--muted2);margin:2px 2px 0 0}
+  .scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg2)}
+
+  /* CALCULATOR */
+  .calc{display:grid;grid-template-columns:1.05fr .95fr;gap:26px;margin-top:14px}
+  @media(max-width:900px){.calc{grid-template-columns:1fr}}
+  .panel{background:linear-gradient(180deg,var(--surface),var(--bg2));border:1px solid var(--line);border-radius:var(--radius);padding:24px}
+  .tabs{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap}
+  .tab{
+    flex:1;min-width:120px;cursor:pointer;border:1px solid var(--line);background:var(--bg2);
+    border-radius:12px;padding:12px 14px;transition:.2s;
+  }
+  .tab .t1{font-family:'Bricolage Grotesque';font-weight:700;font-size:15px;display:flex;align-items:center;gap:8px}
+  .tab .t2{font-size:11.5px;color:var(--muted2);margin-top:3px}
+  .tab .chip{width:9px;height:9px;border-radius:50%}
+  .tab[data-on="1"]{border-color:var(--lime);background:var(--surface2);box-shadow:0 0 0 1px var(--lime) inset}
+  .ctrl{margin-bottom:17px}
+  .ctrl label{display:flex;justify-content:space-between;align-items:baseline;font-size:13.5px;color:var(--muted2);margin-bottom:7px}
+  .ctrl label .v{font-family:'JetBrains Mono',monospace;color:var(--ink);font-size:14px}
+  input[type=range]{
+    -webkit-appearance:none;width:100%;height:5px;border-radius:6px;
+    background:linear-gradient(90deg,var(--lime) var(--p,40%),var(--line) var(--p,40%));outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--ink);
+    border:3px solid var(--lime);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.5);transition:.15s;
+  }
+  input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.18)}
+  input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--ink);border:3px solid var(--lime);cursor:pointer}
+  .toggle{display:flex;gap:6px;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:4px}
+  .toggle button{flex:1;border:none;background:none;color:var(--muted2);font-family:'Hanken Grotesk';font-size:13px;padding:8px;border-radius:7px;cursor:pointer;transition:.2s}
+  .toggle button[data-on="1"]{background:var(--lime);color:#10130b;font-weight:700}
+  .adv{margin-top:8px;border-top:1px dashed var(--line);padding-top:14px}
+  .adv summary{cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--lime-d);list-style:none}
+  .adv summary::-webkit-details-marker{display:none}
+  .adv summary::before{content:"▸ ";}
+  .adv[open] summary::before{content:"▾ "}
+  .adv-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 18px;margin-top:14px}
+  @media(max-width:520px){.adv-grid{grid-template-columns:1fr}}
+
+  /* OUTPUT */
+  .out-top{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .donut-wrap{position:relative;width:190px;height:190px;flex:0 0 auto}
+  .donut{width:100%;height:100%;border-radius:50%;transition:background .35s ease}
+  .donut-center{
+    position:absolute;inset:24px;border-radius:50%;background:var(--bg2);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid var(--line);
+  }
+  .donut-center .big{font-family:'Bricolage Grotesque';font-weight:800;font-size:34px;letter-spacing:-.03em;line-height:1}
+  .donut-center small{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted2);margin-top:4px}
+  .kpis{flex:1;min-width:180px;display:flex;flex-direction:column;gap:12px}
+  .kpi{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--line)}
+  .kpi .lab{font-size:13px;color:var(--muted2)}
+  .kpi .val{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:500}
+  .pos{color:var(--lime)} .neg{color:var(--amber)}
+  .ebbar{height:8px;border-radius:6px;background:var(--surface2);margin-top:6px;position:relative;overflow:hidden}
+  .ebbar .mid{position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--muted2)}
+  .ebbar .fill{position:absolute;top:0;bottom:0;left:50%;border-radius:6px;transition:.35s}
+
+  .legend{margin-top:22px;display:grid;grid-template-columns:1fr;gap:2px}
+  .lrow{display:grid;grid-template-columns:14px 1fr auto auto;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+  .lrow .sw{width:11px;height:11px;border-radius:3px}
+  .lrow .ln{color:var(--muted2)}
+  .lrow .e{font-family:'JetBrains Mono',monospace;color:var(--ink);text-align:right;min-width:62px}
+  .lrow .pc{font-family:'JetBrains Mono',monospace;color:var(--muted2);text-align:right;min-width:46px;font-size:12px}
+  .lrow.head{border-top:1px solid var(--line);margin-top:6px;font-weight:600}
+  .lrow.head .ln{color:var(--ink)}
+
+  /* category cards */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px}
+  @media(max-width:860px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:540px){.grid{grid-template-columns:1fr}}
+  .card{background:linear-gradient(180deg,var(--surface),var(--bg2));border:1px solid var(--line);border-radius:var(--radius);padding:20px;position:relative;overflow:hidden;transition:.25s}
+  .card:hover{transform:translateY(-3px);border-color:#3a4536}
+  .card .ic{font-size:22px;margin-bottom:12px}
+  .card h3{font-family:'Bricolage Grotesque';font-weight:700;font-size:18px;letter-spacing:-.01em}
+  .card .pct{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;color:var(--lime);margin:8px 0 2px;letter-spacing:-.02em}
+  .card .pl{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em}
+  .card p{font-size:13.5px;color:var(--muted2);margin-top:11px}
+  .card .barmini{height:5px;border-radius:4px;background:var(--surface2);margin-top:14px;overflow:hidden}
+  .card .barmini i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,var(--lime),var(--lime-d))}
+
+  /* conclusions */
+  .points{display:grid;gap:14px;margin-top:8px}
+  .pt{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start;background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;transition:.2s}
+  .pt:hover{border-color:#3a4536}
+  .pt .n{font-family:'Bricolage Grotesque';font-weight:800;font-size:30px;color:var(--lime);line-height:1;opacity:.85}
+  .pt h3{font-family:'Bricolage Grotesque';font-weight:700;font-size:17px;margin-bottom:5px}
+  .pt p{font-size:14px;color:var(--muted2)}
+  .pt b{color:var(--ink)}
+
+  /* reveal */
+  .rv{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+  .rv.in{opacity:1;transform:none}
+
+  footer{border-top:1px solid var(--line);padding:46px 0 70px;color:var(--muted2);font-size:13px}
+  footer .src{font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:2;color:var(--grey)}
+  footer a{color:var(--lime-d);text-decoration:none}
+  .disc{margin-top:22px;font-size:12px;color:var(--grey);max-width:760px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-in">
+    <div class="brand"><span class="dot"></span>UNIT&nbsp;ECONOMICS · e-moto delivery</div>
+    <div class="nav-links">
+      <a href="#compra">01 Compra</a>
+      <a href="#alquiler">02 Alquiler</a>
+      <a href="#calc">03 Calculadora</a>
+      <a href="#partidas">04 Partidas</a>
+      <a href="#infra">05 Infraestructura</a>
+      <a href="#conclusiones">06 Claves</a>
+    </div>
+  </div>
+</nav>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow rv">Estructura de costos · alquiler de motos eléctricas para delivery</div>
+    <h1 class="rv">¿En qué se va<br>cada euro del<br><span class="glow">alquiler?</span></h1>
+    <p class="lede rv">Cuánto cuesta la moto, a cuánto la alquilan y la <b>estructura de costos completa</b> — depreciación, electricidad, repuestos, seguros, personal, marketing, robo — en € y en %. Tres modelos de negocio, una calculadora editable.</p>
+    <div class="stat-row">
+      <div class="stat rv"><div class="k">700–5.100&nbsp;€</div><div class="l">Precio de compra de la moto</div></div>
+      <div class="stat rv"><div class="k">40–500&nbsp;€</div><div class="l">Alquiler mensual al rider</div></div>
+      <div class="stat rv"><div class="k">20–35%</div><div class="l">Lo que pesa la depreciación</div></div>
+      <div class="stat rv"><div class="k">0–15%</div><div class="l">Lo que pesa la electricidad</div></div>
+    </div>
+    <div class="banner rv">
+      <span class="ico">⚠️</span>
+      <p><b>Nota de método.</b> El P&amp;L exacto de cada empresa no es público (son privadas). Aquí se combinan <b>datos reales con fuente</b> (precios de compra, alquileres, capex de estaciones, coste de electricidad/km) con una <b>estructura modelada por arquetipo</b>, calibrada con benchmarks del sector de micromovilidad y renting. Las cifras en € de los P&amp;L son ilustrativas; los % se apoyan en datos de mercado 2025–2026.</p>
+    </div>
+  </div>
+</header>
+
+<!-- 01 COMPRA -->
+<section id="compra">
+  <div class="wrap">
+    <div class="sec-head rv"><span class="sec-num">01</span><h2>¿Cuánto cuesta la moto?</h2></div>
+    <p class="sec-sub rv">Precio de adquisición que paga el operador. La <b>batería es el 30–50% del valor</b> y se reemplaza 1–2 veces durante la vida del vehículo.</p>
+    <div class="scroll rv">
+      <table class="tbl">
+        <thead><tr><th>Categoría</th><th>Precio de compra</th><th>Baterías · reemplazo</th><th>Vida útil</th><th>Residual</th></tr></thead>
+        <tbody>
+          <tr><td class="name">E-bike de reparto<div class="sm">Zoomo Zero/One, Whizz Storm-2</div></td><td class="num">1.380–1.660 €</td><td class="sm">1 pack · 370–830 €<div><span class="tag">OEM China 110–650 €</span></div></td><td class="sm">3–5 años</td><td class="sm">60–70% año 1</td></tr>
+          <tr><td class="name">Ciclomotor / scooter 50cc<div class="sm">NIU MQi, Silence S02 LS</div></td><td class="num">2.500–3.600 €</td><td class="sm">1–2 · ~1.200 €/pack</td><td class="sm">5+ años</td><td class="sm">60–70% año 1</td></tr>
+          <tr><td class="name">Scooter / moto 125cc<div class="sm">Super Soco/Vmoto CPx, Silence S02, NIU NQi</div></td><td class="num">3.700–5.100 €</td><td class="sm">1–2 · <b style="color:var(--ink)">~2.150 €/pack</b></td><td class="sm">5–8 años</td><td class="sm">−30 a −50% año 1</td></tr>
+          <tr><td class="name">Moto battery-swap (emergentes)<div class="sm">Roam Air, Spiro, Ampersand, Gogoro</div></td><td class="num">700–1.600 €</td><td class="sm">1–2 swap · la red la alquila</td><td class="sm">uso intensivo</td><td class="sm">paridad gasolina</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="banner rv" style="background:linear-gradient(120deg,rgba(70,216,200,.07),rgba(20,26,21,.4));border-color:#234039">
+      <span class="ico">🔋</span>
+      <p>Coste de celda (BloombergNEF, dic-2025): <b>108 $/kWh global</b>, pero <b>Europa +56% (~131 $/kWh)</b> y China 84 $/kWh. Por eso una moto de swap africana (700–1.600 €) cuesta <b>menos que un e-bike de marca occidental</b>: la batería se monetiza aparte, vía swap.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 ALQUILER -->
+<section id="alquiler">
+  <div class="wrap">
+    <div class="sec-head rv"><span class="sec-num">02</span><h2>¿A cuánto la alquilan?</h2></div>
+    <p class="sec-sub rv">Cuota mensual al rider. El <b>mantenimiento</b> casi siempre va incluido; el <b>seguro</b> sí en motos pero no en e-bikes de EE.UU.; el <b>robo</b> rara vez en la cuota base.</p>
+    <div class="scroll rv">
+      <table class="tbl">
+        <thead><tr><th>Empresa</th><th>Vehículo</th><th>€/mes ≈</th><th>Incluye</th></tr></thead>
+        <tbody>
+          <tr><td class="name">Cooltra <span class="sm">ES</span></td><td class="sm">E-bike Rider GO</td><td class="num">89–109 €</td><td class="sm">Batería+cargador, mantenimiento</td></tr>
+          <tr><td class="name">Cooltra <span class="sm">ES</span></td><td class="sm">Scooter CPx delivery</td><td class="num">150–250 €</td><td class="sm">2 baterías, top-case 90L, seguro, asistencia, reemplazo</td></tr>
+          <tr><td class="name">Zoomo <span class="sm">ES/FR</span></td><td class="sm">E-bike Pro</td><td class="num">150–160 €</td><td class="sm">Mantenimiento, km ilimitados, GPS</td></tr>
+          <tr><td class="name">Zenion <span class="sm">UK</span></td><td class="sm">E-moto delivery</td><td class="num">~380 €</td><td class="sm">Mantenimiento + seguro de delivery, sin depósito</td></tr>
+          <tr><td class="name">Otto Scooter <span class="sm">UK</span></td><td class="sm">Super Soco CPX</td><td class="num">~375 €</td><td class="sm">Servicio, GPS, seguro moto+delivery</td></tr>
+          <tr><td class="name">Whizz <span class="sm">US</span></td><td class="sm">E-bike Storm-2</td><td class="num">~155 €</td><td class="sm">Rent-to-own; robo y swap aparte</td></tr>
+          <tr><td class="name">Zygg <span class="sm">CA</span></td><td class="sm">E-bike plan Delivery</td><td class="num">~88 €</td><td class="sm">Servicio wear&amp;tear, robo estándar</td></tr>
+          <tr><td class="name">Vammo <span class="sm">BR</span></td><td class="sm">E-moto + swap</td><td class="num">191–243 €</td><td class="sm">Seguro, mantenimiento, swaps ilimitados</td></tr>
+          <tr><td class="name">Zypp <span class="sm">IN</span></td><td class="sm">E-scooter delivery</td><td class="num">~40 €</td><td class="sm">Alquiler EV ~120 km</td></tr>
+          <tr><td class="name">Roam <span class="sm">KE</span></td><td class="sm">Roam Air (rent-to-own)</td><td class="num">98–112 €</td><td class="sm">Seguro moto+salud, red de carga, acaba en propiedad</td></tr>
+          <tr><td class="name">Spiro <span class="sm">KE/Togo</span></td><td class="sm">E-moto + swap</td><td class="num">54–146 €</td><td class="sm">Moto + hasta 7 swaps/día + mantenimiento + seguro</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 03 CALCULADORA -->
+<section id="calc">
+  <div class="wrap">
+    <div class="sec-head rv"><span class="sec-num">03</span><h2>La estructura de costos, en vivo</h2></div>
+    <p class="sec-sub rv">Elige un arquetipo y mueve los controles. El P&amp;L por vehículo/mes, el <b>EBITDA</b>, el margen de contribución y el <b>payback</b> de la moto se recalculan al instante. La gran diferencia entre modelos: <b>quién paga la electricidad</b>.</p>
+
+    <div class="calc rv">
+      <!-- controls -->
+      <div class="panel">
+        <div class="tabs" id="tabs">
+          <div class="tab" data-arq="A" data-on="1"><div class="t1"><span class="chip" style="background:var(--lime)"></span>A · E-bike</div><div class="t2">Occidente — Zoomo, Whizz, Cooltra e-bike</div></div>
+          <div class="tab" data-arq="B"><div class="t1"><span class="chip" style="background:var(--cyan)"></span>B · Scooter 125cc</div><div class="t2">España — Cooltra, Velca, Inquieto</div></div>
+          <div class="tab" data-arq="C"><div class="t1"><span class="chip" style="background:var(--amber)"></span>C · Battery-swap</div><div class="t2">Emergentes — Spiro, Ampersand, Vammo</div></div>
+        </div>
+
+        <div class="ctrl"><label>Precio de compra de la moto <span class="v" id="vPrecio">1.500 €</span></label><input type="range" id="precio" min="400" max="6000" step="50" value="1500"></div>
+        <div class="ctrl"><label>Reemplazo / coste de baterías <span class="v" id="vBat">500 €</span></label><input type="range" id="bat" min="0" max="4500" step="50" value="500"></div>
+        <div class="ctrl"><label>Alquiler mensual (cuota) <span class="v" id="vRenta">150 €</span></label><input type="range" id="renta" min="30" max="500" step="5" value="150"></div>
+        <div class="ctrl"><label>Vida útil del vehículo <span class="v" id="vVida">36 meses</span></label><input type="range" id="vida" min="12" max="96" step="2" value="36"></div>
+        <div class="ctrl"><label>Utilización de la flota <span class="v" id="vUtil">85%</span></label><input type="range" id="util" min="40" max="100" step="1" value="85"></div>
+
+        <div class="ctrl">
+          <label>¿Quién carga la batería? <span class="v" id="vEnergy">El rider · 0 €</span></label>
+          <div class="toggle" id="energyTog">
+            <button data-e="rider" data-on="1">El rider (en casa)</button>
+            <button data-e="operador">El operador (swap)</button>
+          </div>
+        </div>
+
+        <details class="adv">
+          <summary>Supuestos avanzados</summary>
+          <div class="adv-grid">
+            <div class="ctrl"><label>Residual <span class="v" id="vResid">250 €</span></label><input type="range" id="resid" min="0" max="2000" step="50" value="250"></div>
+            <div class="ctrl"><label>km / mes <span class="v" id="vKm">2.500</span></label><input type="range" id="km" min="500" max="7000" step="100" value="2500"></div>
+            <div class="ctrl"><label>Consumo kWh/100km <span class="v" id="vCons">0,7</span></label><input type="range" id="cons" min="0.4" max="5" step="0.1" value="0.7"></div>
+            <div class="ctrl"><label>Precio luz €/kWh <span class="v" id="vKwh">0,13</span></label><input type="range" id="kwh" min="0.05" max="0.35" step="0.01" value="0.13"></div>
+            <div class="ctrl"><label>Mantenimiento <span class="v" id="vMant">11%</span></label><input type="range" id="mant" min="4" max="20" step="1" value="11"></div>
+            <div class="ctrl"><label>Personal <span class="v" id="vPers">17%</span></label><input type="range" id="pers" min="8" max="35" step="1" value="17"></div>
+            <div class="ctrl"><label>Marketing / CAC <span class="v" id="vMkt">7%</span></label><input type="range" id="mkt" min="2" max="25" step="1" value="7"></div>
+            <div class="ctrl"><label>SG&amp;A / overhead <span class="v" id="vSga">12%</span></label><input type="range" id="sga" min="6" max="20" step="1" value="12"></div>
+            <div class="ctrl"><label>Coste financiero <span class="v" id="vFin">7%</span></label><input type="range" id="fin" min="2" max="15" step="1" value="7"></div>
+            <div class="ctrl"><label>Robo / pérdida <span class="v" id="vRobo">6%</span></label><input type="range" id="robo" min="0" max="15" step="1" value="6"></div>
+            <div class="ctrl"><label>Seguro <span class="v" id="vSeg">4%</span></label><input type="range" id="seg" min="2" max="12" step="1" value="4"></div>
+            <div class="ctrl"><label>Infra. swap <span class="v" id="vInfra">0%</span></label><input type="range" id="infra" min="0" max="15" step="1" value="0"></div>
+          </div>
+        </details>
+      </div>
+
+      <!-- output -->
+      <div class="panel">
+        <div class="out-top">
+          <div class="donut-wrap">
+            <div class="donut" id="donut"></div>
+            <div class="donut-center"><span class="big" id="ebPct">—</span><small>EBITDA</small></div>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><span class="lab">Ingreso efectivo</span><span class="val mono" id="kIng">—</span></div>
+            <div class="kpi"><span class="lab">Margen de contribución</span><span class="val mono pos" id="kContr">—</span></div>
+            <div class="kpi"><span class="lab">EBITDA / vehículo·mes</span><span class="val mono" id="kEb">—</span></div>
+            <div class="kpi"><span class="lab">Payback de la moto</span><span class="val mono" id="kPay">—</span></div>
+            <div class="ebbar"><div class="mid"></div><div class="fill" id="ebFill"></div></div>
+          </div>
+        </div>
+        <div class="legend" id="legend"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 PARTIDAS -->
+<section id="partidas">
+  <div class="wrap">
+    <div class="sec-head rv"><span class="sec-num">04</span><h2>Cada partida, en detalle</h2></div>
+    <p class="sec-sub rv">% típico sobre ingresos y dato real de cada línea de gasto. Las barras muestran el <b>peso medio</b> de la partida.</p>
+    <div class="grid">
+      <div class="card rv"><div class="ic">📉</div><h3>Depreciación moto+batería</h3><div class="pct">20–35%</div><div class="pl">la que mata o salva</div><p>Vidas útiles cortas hundieron la micromovilidad (Bird provisionó ~100 M$). Alargar a 2–3 años es lo que separó ganadores de caídos.</p><div class="barmini"><i style="width:80%"></i></div></div>
+      <div class="card rv"><div class="ic">👷</div><h3>Personal / nómina</h3><div class="pct">20–30%</div><div class="pl">taller + ops + atención</div><p>En micromovilidad las operaciones de campo son ~60% del coste por viaje. En suscripción se reduce porque el rider carga.</p><div class="barmini"><i style="width:70%"></i></div></div>
+      <div class="card rv"><div class="ic">🔧</div><h3>Mantenimiento y repuestos</h3><div class="pct">10–15%</div><div class="pl">−50/70% vs gasolina</div><p>El motor eléctrico tiene ~1 pieza móvil: sin aceite, bujías ni servicios cada 3.000 km. 100–500 €/año vs 600–1.000 € de combustión.</p><div class="barmini"><i style="width:42%"></i></div></div>
+      <div class="card rv"><div class="ic">🏢</div><h3>SG&amp;A / overhead</h3><div class="pct">10–18%</div><div class="pl">IT, sede, pagos</div><p>Helbiz tenía 47% del opex en overhead corporativo y nunca fue rentable. La estructura ligera es decisiva.</p><div class="barmini"><i style="width:48%"></i></div></div>
+      <div class="card rv"><div class="ic">💰</div><h3>Coste financiero</h3><div class="pct">5–12%</div><div class="pl">leasing / deuda de flota</div><p>Negocio intensivo en capital. ~100 €/mes leasing + 35 €/mes software por vehículo en scooter-sharing.</p><div class="barmini"><i style="width:34%"></i></div></div>
+      <div class="card rv"><div class="ic">📣</div><h3>Marketing / CAC</h3><div class="pct">4–10%</div><div class="pl">20–30% al abrir ciudad</div><p>La moto actúa de "valla publicitaria móvil" y baja el CAC. Regla CLV/CAC ≥ 3×.</p><div class="barmini"><i style="width:30%"></i></div></div>
+      <div class="card rv"><div class="ic">🚨</div><h3>Robo / pérdida / vandalismo</h3><div class="pct">3–8%</div><div class="pl">doble dígito en alto riesgo</div><p>El gran problema de Bird/Lime. Se mitiga con GPS, lock remoto, equipos de recuperación y cobertura opcional.</p><div class="barmini"><i style="width:26%"></i></div></div>
+      <div class="card rv"><div class="ic">🛡️</div><h3>Seguro</h3><div class="pct">3–6%</div><div class="pl">comercial ≈ 5× particular</div><p>El seguro de reparto ("hire &amp; reward") cuesta unas 5 veces el de una moto particular (mediana UK ~1.149 £/año).</p><div class="barmini"><i style="width:22%"></i></div></div>
+      <div class="card rv" style="border-color:#3a4d1f"><div class="ic">⚡</div><h3>Electricidad</h3><div class="pct">0–15%</div><div class="pl">según quién carga</div><p><b style="color:var(--ink)">0%</b> si el rider enchufa en casa (e-bike/scooter). <b style="color:var(--ink)">10–15%</b> si el operador carga en estaciones (swap). −70/80% vs gasolina.</p><div class="barmini"><i style="width:38%;background:linear-gradient(90deg,var(--yellow),var(--lime))"></i></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 INFRA -->
+<section id="infra">
+  <div class="wrap">
+    <div class="sec-head rv"><span class="sec-num">05</span><h2>Infraestructura de battery-swap</h2></div>
+    <p class="sec-sub rv">Solo aplica al arquetipo C. El armario es barato; <b>el inventario de baterías es el coste de capital real</b> — por eso estas empresas levantan rondas de 50–100 M$.</p>
+    <div class="scroll rv">
+      <table class="tbl">
+        <thead><tr><th>Concepto</th><th>Cifra real</th><th>Detalle</th></tr></thead>
+        <tbody>
+          <tr><td class="name">Capex armario genérico</td><td class="num">3.000–10.000 $</td><td class="sm">4–12 huecos, sin baterías</td></tr>
+          <tr><td class="name">Estación "smart" 2–3 ruedas</td><td class="num">8.000–20.000 $</td><td class="sm">según sofisticación</td></tr>
+          <tr><td class="name">Estación completa de moto</td><td class="num">15.000–45.000 $</td><td class="sm">rango de mercado</td></tr>
+          <tr><td class="name">Baterías dentro de estación grande</td><td class="num">90.000–150.000 $</td><td class="sm">Ampersand: 150 packs — varias veces el coste del armario</td></tr>
+          <tr><td class="name">Desarrollo de software/app</td><td class="num">32.000–48.000 $</td><td class="sm">one-off</td></tr>
+          <tr><td class="name">Opex eléctrico estación 2 ruedas</td><td class="num">~2.100 $/mes</td><td class="sm">~17–26% del opex de la estación</td></tr>
+          <tr><td class="name">Capacidad por estación</td><td class="num">45–230 motos</td><td class="sm">Gogoro ~45 · Super GoStation hasta 1.000 · Ampersand ~230</td></tr>
+          <tr><td class="name">Telemática / IoT por vehículo</td><td class="num">15–30 $/mes</td><td class="sm">plataforma + SIM (+50–200 $ hardware)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 06 CONCLUSIONES -->
+<section id="conclusiones">
+  <div class="wrap">
+    <div class="sec-head rv"><span class="sec-num">06</span><h2>Las 6 claves del negocio</h2></div>
+    <div class="points">
+      <div class="pt rv"><div class="n">01</div><div><h3>Casi todos rondan el break-even por vehículo</h3><p>Margen de contribución <b>~29–35%</b>; EBITDA de ligeramente negativo a <b>+15–25%</b>. La rentabilidad llega con <b>escala</b> (diluir overhead) y <b>utilización alta</b>.</p></div></div>
+      <div class="pt rv"><div class="n">02</div><div><h3>El trío que decide la viabilidad: depreciación + financiación + robo</h3><p>Juntos pueden ser <b>30–50% de los ingresos</b>. Alargar la vida útil del activo y controlar el robo separó a los ganadores (Lime, Cooltra, Yulu, Mottu) de los caídos (Bird, Helbiz, Voltz).</p></div></div>
+      <div class="pt rv"><div class="n">03</div><div><h3>Quién paga la electricidad cambia el modelo</h3><p>En e-bikes/scooters de suscripción la energía es <b>0%</b> para el operador (la paga el rider). Solo en <b>battery-swap</b> es coste del operador (10–15%) — pero a cambio captura el margen energético y fideliza con la red.</p></div></div>
+      <div class="pt rv"><div class="n">04</div><div><h3>El eléctrico gana en OPEX, no en CAPEX</h3><p>Cuesta más comprar (sobre todo la batería) pero <b>−50/70% en mantenimiento</b> y <b>−70/80% en energía</b> frente a gasolina. El payback depende de exprimir esa ventaja con uso intensivo.</p></div></div>
+      <div class="pt rv"><div class="n">05</div><div><h3>Quién ya gana dinero</h3><p>Mottu (<b>69% margen bruto</b>, ARPU ~150 $/moto/mes), Cooltra (<b>EBITDA+ desde 2019</b>, 60 M€), Yulu (EBITDA+ 2024), JOCO (rentable con solo 7,5 M$ levantados). Benchmark de operador maduro: EBITDA 13–20%.</p></div></div>
+      <div class="pt rv"><div class="n">06</div><div><h3>El inventario de baterías es el muro de capital</h3><p>En el modelo swap el coste oculto no es el armario, son las baterías (90.000–150.000 $/estación grande). Por eso Spiro levantó 100 M$+50 M$ y Vammo 83,5 M$.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div style="font-family:'Bricolage Grotesque';font-weight:700;font-size:18px;color:var(--ink);margin-bottom:14px">Fuentes principales</div>
+    <div class="src">
+      ridezoomo.com · getwhizz.com · cooltra.com · zenion.com · ottoscooter.co.uk · ridezygg.com · zypp.app · yulu.bike · sacra.com/c/mottu · constructcap.com (Vammo) · gogoro.com · electrek.co · restofworld.org · cnn.com<br>
+      bike-ev.com · vmoto.com · newatlas.com · green-mopeds.com · BloombergNEF (108 $/kWh, dic-2025) · tycorun.com · srepowerne.com · autocarpro.in · thebetterindia.com · ev24.africa · MIT Tech Review · Eurostat<br>
+      gadallon.substack.com &amp; oversharing.substack.com (Bird/Lime) · atommobility.com · eazyride.io · cfodive.com · businesswire.com (Lime/Helbiz/Voi) · micromobility.substack.com · umbrex.com · gpsinsight.com
+    </div>
+    <p class="disc">Las cifras en € de los P&amp;L son un modelo ilustrativo por arquetipo a precios 2025–2026; los % se apoyan en benchmarks del sector de micromovilidad, renting y vehicle-subscription. Para cifras definitivas de una empresa concreta hace falta su información financiera privada. · Documento generado en junio 2026.</p>
+  </div>
+</footer>
+
+<script>
+const fmtE = n => new Intl.NumberFormat('es-ES',{maximumFractionDigits:0}).format(Math.round(n))+' €';
+const fmtN = n => new Intl.NumberFormat('es-ES',{maximumFractionDigits:0}).format(Math.round(n));
+
+// preset por arquetipo
+const PRESETS = {
+  A:{precio:1500,bat:500,renta:150,vida:36,util:85,resid:250,energy:'rider',km:2500,cons:0.7,kwh:0.13,mant:11,pers:17,mkt:7,sga:12,fin:7,robo:6,seg:4,infra:0},
+  B:{precio:4000,bat:2500,renta:250,vida:60,util:88,resid:800,energy:'rider',km:3000,cons:4,kwh:0.13,mant:10,pers:16,mkt:6,sga:10,fin:7,robo:6,seg:10,infra:0},
+  C:{precio:1300,bat:1200,renta:220,vida:42,util:92,resid:200,energy:'operador',km:5000,cons:4,kwh:0.13,mant:7,pers:20,mkt:5,sga:9,fin:8,robo:5,seg:4,infra:7}
+};
+
+const ID = id => document.getElementById(id);
+const ranges = ['precio','bat','renta','vida','util','resid','km','cons','kwh','mant','pers','mkt','sga','fin','robo','seg','infra'];
+let energy = 'rider';
+
+function setRange(id,val){ const el=ID(id); el.value=val; paintRange(el); }
+function paintRange(el){
+  const min=+el.min,max=+el.max,v=+el.value;
+  el.style.setProperty('--p',((v-min)/(max-min)*100)+'%');
+}
+
+function applyPreset(arq){
+  const p=PRESETS[arq];
+  ranges.forEach(r=>setRange(r,p[r]));
+  energy=p.energy;
+  ID('energyTog').querySelectorAll('button').forEach(b=>b.dataset.on=(b.dataset.e===energy)?'1':'0');
+  document.querySelectorAll('#tabs .tab').forEach(t=>t.dataset.on=(t.dataset.arq===arq)?'1':'0');
+  compute();
+}
+
+function val(id){return +ID(id).value}
+
+function compute(){
+  const precio=val('precio'),bat=val('bat'),renta=val('renta'),vida=val('vida'),util=val('util'),
+        resid=val('resid'),km=val('km'),cons=val('cons'),kwh=val('kwh');
+  // labels
+  ID('vPrecio').textContent=fmtE(precio);
+  ID('vBat').textContent=fmtE(bat);
+  ID('vRenta').textContent=fmtE(renta);
+  ID('vVida').textContent=vida+' meses';
+  ID('vUtil').textContent=util+'%';
+  ID('vResid').textContent=fmtE(resid);
+  ID('vKm').textContent=fmtN(km);
+  ID('vCons').textContent=cons.toString().replace('.',',');
+  ID('vKwh').textContent=kwh.toString().replace('.',',');
+  ['mant','pers','mkt','sga','fin','robo','seg','infra'].forEach(k=>ID('v'+k.charAt(0).toUpperCase()+k.slice(1)).textContent=val(k)+'%');
+
+  const ingreso = renta*util/100;
+  const energia = energy==='operador' ? (km/100*cons*kwh) : 0;
+  ID('vEnergy').textContent = energy==='operador' ? ('El operador · '+fmtE(energia)) : 'El rider · 0 €';
+
+  // líneas de coste
+  const depVeh = Math.max(0,(precio-resid))/vida;
+  const depBat = bat/Math.max(12,vida*0.7);   // batería se amortiza algo más rápido
+  const mant=ingreso*val('mant')/100, seg=ingreso*val('seg')/100, robo=ingreso*val('robo')/100,
+        fin=ingreso*val('fin')/100, infra=ingreso*val('infra')/100,
+        pers=ingreso*val('pers')/100, mkt=ingreso*val('mkt')/100, sga=ingreso*val('sga')/100;
+  const telem=7;
+
+  const lines=[
+    {k:'Depreciación vehículo',v:depVeh,c:'var(--lime)',g:'d'},
+    {k:'Baterías (amortización)',v:depBat,c:'var(--teal)',g:'d'},
+    {k:'Electricidad',v:energia,c:'var(--yellow)',g:'d'},
+    {k:'Infraestructura swap',v:infra,c:'var(--cyan)',g:'d'},
+    {k:'Mantenimiento y repuestos',v:mant,c:'var(--amber)',g:'d'},
+    {k:'Seguro',v:seg,c:'var(--pink)',g:'d'},
+    {k:'Robo / pérdida',v:robo,c:'var(--red)',g:'d'},
+    {k:'Coste financiero',v:fin,c:'var(--violet)',g:'d'},
+    {k:'Telemática / GPS',v:telem,c:'var(--olive)',g:'d'},
+    {k:'Personal',v:pers,c:'var(--blue)',g:'i'},
+    {k:'Marketing / CAC',v:mkt,c:'#46d8c8',g:'i'},
+    {k:'SG&A / overhead',v:sga,c:'var(--grey)',g:'i'}
+  ].filter(l=>l.v>0.001);
+
+  const directos = lines.filter(l=>l.g==='d').reduce((a,b)=>a+b.v,0);
+  const totalCost = lines.reduce((a,b)=>a+b.v,0);
+  const contrib = ingreso-directos;
+  const ebitda = ingreso-totalCost;
+  const ebPct = ingreso>0 ? ebitda/ingreso*100 : 0;
+  const contrMensual = contrib;
+  const payback = contrMensual>0 ? precio/contrMensual : Infinity;
+
+  // donut
+  let acc=0, segs=[];
+  lines.forEach(l=>{ const frac=l.v/totalCost*100; segs.push(`${l.c} ${acc}% ${acc+frac}%`); acc+=frac; });
+  ID('donut').style.background = `conic-gradient(${segs.join(',')})`;
+
+  // ebitda center
+  const ebEl=ID('ebPct');
+  ebEl.textContent=(ebPct>=0?'+':'')+ebPct.toFixed(0)+'%';
+  ebEl.className='big '+(ebPct>=0?'pos':'neg');
+
+  // kpis
+  ID('kIng').textContent=fmtE(ingreso)+'/m';
+  ID('kContr').textContent=fmtE(contrib)+'  ('+(ingreso>0?Math.round(contrib/ingreso*100):0)+'%)';
+  ID('kContr').className='val mono '+(contrib>=0?'pos':'neg');
+  const kEb=ID('kEb'); kEb.textContent=(ebitda>=0?'+':'')+fmtE(ebitda)+'/m'; kEb.className='val mono '+(ebitda>=0?'pos':'neg');
+  ID('kPay').textContent = isFinite(payback) ? (payback.toFixed(payback<10?1:0)+' meses') : '∞ (sin margen)';
+  ID('kPay').className='val mono '+(isFinite(payback)?'':'neg');
+
+  // ebitda bar (-20%..+25%)
+  const fill=ID('ebFill');
+  const clamp=Math.max(-20,Math.min(25,ebPct));
+  if(clamp>=0){ fill.style.left='50%'; fill.style.width=(clamp/25*50)+'%'; fill.style.background='var(--lime)'; }
+  else{ const w=(-clamp/20*50); fill.style.left=(50-w)+'%'; fill.style.width=w+'%'; fill.style.background='var(--amber)'; }
+
+  // legend
+  const lg=ID('legend');
+  lg.innerHTML = lines.map(l=>`<div class="lrow"><span class="sw" style="background:${l.c}"></span><span class="ln">${l.k}</span><span class="e">${fmtE(l.v)}</span><span class="pc">${(l.v/ingreso*100||0).toFixed(0)}%</span></div>`).join('')
+    + `<div class="lrow head"><span class="sw" style="background:transparent"></span><span class="ln">Total costes</span><span class="e">${fmtE(totalCost)}</span><span class="pc">${Math.round(totalCost/ingreso*100)}%</span></div>`
+    + `<div class="lrow head"><span class="sw" style="background:transparent"></span><span class="ln" style="color:${ebitda>=0?'var(--lime)':'var(--amber)'}">EBITDA</span><span class="e" style="color:${ebitda>=0?'var(--lime)':'var(--amber)'}">${(ebitda>=0?'+':'')+fmtE(ebitda)}</span><span class="pc" style="color:${ebitda>=0?'var(--lime)':'var(--amber)'}">${(ebPct>=0?'+':'')+ebPct.toFixed(0)}%</span></div>`;
+}
+
+// listeners
+ranges.forEach(r=>{ const el=ID(r); el.addEventListener('input',()=>{paintRange(el);compute();}); paintRange(el); });
+document.querySelectorAll('#tabs .tab').forEach(t=>t.addEventListener('click',()=>applyPreset(t.dataset.arq)));
+ID('energyTog').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+  energy=b.dataset.e;
+  ID('energyTog').querySelectorAll('button').forEach(x=>x.dataset.on=(x===b)?'1':'0');
+  // si pasa a swap y la infra está en 0, dale un valor por defecto razonable
+  if(energy==='operador' && val('infra')===0){ setRange('infra',7); }
+  compute();
+}));
+
+applyPreset('A');
+
+// reveal on scroll + staggered hero
+const io=new IntersectionObserver((es)=>es.forEach((e,i)=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }),{threshold:.12});
+document.querySelectorAll('.rv').forEach((el,i)=>{ el.style.transitionDelay=(Math.min(i,6)*60)+'ms'; io.observe(el); });
+</script>
+</body>
+</html>
