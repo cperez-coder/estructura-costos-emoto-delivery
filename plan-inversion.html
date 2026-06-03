@@ -101,6 +101,15 @@
   .bar .col{width:100%;max-width:46px;background:linear-gradient(180deg,var(--lime),var(--lime-d));border-radius:6px 6px 0 0;transition:height .55s cubic-bezier(.2,.7,.2,1);min-height:3px;flex-shrink:0}
   .bar .bv{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--ink);margin-bottom:6px;font-variant-numeric:tabular-nums}
   .bar .bx{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--grey);margin-top:7px}
+  .mtable-wrap{margin-top:16px;background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:8px}
+  .mhead{display:flex;justify-content:space-between;align-items:center;padding:8px 10px 12px;font-size:13px;color:var(--muted)}
+  .mscroll{max-height:330px;overflow:auto;border-radius:10px}
+  .mtable{width:100%;border-collapse:collapse;font-size:12.5px;min-width:580px}
+  .mtable th{position:sticky;top:0;background:var(--surface2);color:var(--muted);font-family:'JetBrains Mono',monospace;font-weight:500;font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;text-align:right;padding:9px 12px;border-bottom:1px solid var(--line)}
+  .mtable th:first-child,.mtable td:first-child{text-align:left}
+  .mtable td{text-align:right;padding:8px 12px;border-bottom:1px solid var(--line);font-family:'JetBrains Mono',monospace;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .mtable tbody tr:last-child td{border-bottom:none}
+  .mtable tbody tr:hover td{background:var(--surface)}
   .split2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
   @media(max-width:760px){.split2{grid-template-columns:1fr}}
   .infobox{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:18px}
@@ -257,6 +266,16 @@
     <div class="bars" id="sc_bars"></div>
   </div>
 
+  <div class="mtable-wrap">
+    <div class="mhead"><span>📅 Proyección mes a mes</span><span class="mono" id="sc_mcount">—</span></div>
+    <div class="mscroll">
+      <table class="mtable">
+        <thead><tr><th>Mes</th><th>Flota</th><th>Ingreso</th><th>Costos</th><th>Ganancia</th><th>+Motos</th><th>Caja</th><th>Acumulado</th></tr></thead>
+        <tbody id="sc_mbody"></tbody>
+      </table>
+    </div>
+  </div>
+
   <div class="split2">
     <div class="infobox"><h4>🏗️ Infraestructura al final</h4>
       <div class="il"><span class="l">🛵 Motos en flota</span><span class="n" id="sc_iMotos">—</span></div>
@@ -375,19 +394,20 @@ function scC(){
   ID('sc_reinv').textContent=Math.round(reinv*100)+'%';ID('sc_loss').textContent=Math.round(loss*100)+'%';ID('sc_H').textContent=H+' meses';
   const VAR=23, BATT=Math.round(0.35*350), ST_CX=2200, HUB_CX=2000;
   let cash=cap,F=0,invested=cap,cum=0,minCash=cap,beMonth=0;
-  const series=[],ms={};
+  const series=[],ms={},monthly=[];
   function onb(nF){let c=C+BATT;if(Math.ceil(nF/50)>Math.ceil((nF-1)/50))c+=ST_CX;if(Math.ceil(nF/70)>Math.ceil((nF-1)/70))c+=HUB_CX;return c;}
   function buy(budget){while(true){const c=onb(F+1);if(budget>=c){budget-=c;cash-=c;F++;}else break;}}
   buy(cash);
   for(let m=1;m<=H;m++){
     F=Math.max(0,F-F*loss/12);
-    const rev=F*R,varc=F*VAR,fx=fixedCost(F),profit=rev-varc-fx;
+    const fx=fixedCost(F),rev=F*R,varc=F*VAR,profit=rev-varc-fx;
     cash+=profit+inj;invested+=inj;cum+=profit;
     if(profit>0)cash-=profit*(1-reinv);
     if(beMonth===0&&profit>0)beMonth=m;
     minCash=Math.min(minCash,cash);
-    buy(Math.max(0,cash-150));
+    const Fb=F; buy(Math.max(0,cash-150)); const added=Math.round(F-Fb);
     [50,100,250,500,1000].forEach(k=>{if(!ms[k]&&F>=k)ms[k]=m;});
+    monthly.push({m,F:Math.round(F),rev,cost:varc+fx,profit,added,cash,cum});
     if(m%12===0||m===H)series.push({y:m/12,F:Math.round(F)});
   }
   const Ff=Math.round(F),s=staff(F),fx=fixedCost(F);
@@ -408,6 +428,9 @@ function scC(){
   const mx=Math.max(...series.map(p=>p.F),1);
   ID('sc_chartmax').textContent='máximo '+mx+' motos';
   renderBars(series,mx);
+  // tabla mes a mes
+  ID('sc_mcount').textContent=monthly.length+' meses';
+  ID('sc_mbody').innerHTML=monthly.map(r=>`<tr><td>${r.m}</td><td>${r.F}</td><td>${f0(r.rev)}</td><td>${f0(r.cost)}</td><td class="${r.profit>=0?'pos':'negr'}">${(r.profit>=0?'+':'')+f0(r.profit)}</td><td class="${r.added>0?'pos':''}">${r.added>0?'+'+r.added:'·'}</td><td>${f0(r.cash)}</td><td class="${r.cum>=0?'pos':'negr'}">${(r.cum>=0?'+':'')+f0(r.cum)}</td></tr>`).join('');
   // verdict
   const vd=ID('sc_verdict');
   if(profM<=0){vd.className='verdict warn';ID('sc_vi').textContent='⚠️';ID('sc_vt').textContent='No despega';ID('sc_vs').textContent='Los costos fijos o el robo se comen el margen. Sube capital inicial, baja robo o sube alquiler.';}
