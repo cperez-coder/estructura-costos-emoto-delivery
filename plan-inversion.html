@@ -243,7 +243,7 @@
       <div class="ctrl"><label><b>Alquiler / mes</b> <span class="v" id="sc_R">$170</span></label><input type="range" id="sc_Rr" min="120" max="240" step="5" value="170"></div>
       <div class="ctrl"><label><b>Reinversión de la ganancia</b> <span class="v" id="sc_reinv">100%</span></label><input type="range" id="sc_reinvr" min="40" max="100" step="5" value="100"><div class="hint">el resto lo retiras como dividendo</div></div>
       <div class="ctrl"><label><b>Robo/pérdida anual</b> <span class="v" id="sc_loss">8%</span></label><input type="range" id="sc_lossr" min="0" max="20" step="1" value="8"><div class="hint">motos perdidas/año — el gran riesgo</div></div>
-      <div class="ctrl"><label><b>Horizonte</b> <span class="v" id="sc_H">60 meses</span></label><input type="range" id="sc_Hr" min="24" max="84" step="6" value="60"></div>
+      <div class="ctrl"><label><b>Horizonte</b> <span class="v" id="sc_H">60 meses</span></label><input type="range" id="sc_Hr" min="1" max="84" step="1" value="60"></div>
     </div>
     <div class="panel">
       <div class="verdict" id="sc_verdict"><span class="vi" id="sc_vi">📈</span><div><div class="vt" id="sc_vt">—</div><div class="vs" id="sc_vs">—</div></div></div>
@@ -385,7 +385,7 @@ function renderBars(series,mx){
     const b=bars[i];
     b.querySelector('.bv').textContent=p.F;
     b.querySelector('.col').style.height=Math.max(2,p.F/mx*72)+'%';
-    b.querySelector('.bx').textContent='año '+(Number.isInteger(p.y)?p.y:p.y.toFixed(1));
+    b.querySelector('.bx').textContent=(p.m%12===0?'año '+(p.m/12):'mes '+p.m);
   });
 }
 function scC(){
@@ -408,7 +408,7 @@ function scC(){
     const Fb=F; buy(Math.max(0,cash-150)); const added=Math.round(F-Fb);
     [50,100,250,500,1000].forEach(k=>{if(!ms[k]&&F>=k)ms[k]=m;});
     monthly.push({m,F:Math.round(F),rev,cost:varc+fx,profit,added,cash,cum});
-    if(m%12===0||m===H)series.push({y:m/12,F:Math.round(F)});
+    if(m%12===0||m===H)series.push({m,y:m/12,F:Math.round(F)});
   }
   const Ff=Math.round(F),s=staff(F),fx=fixedCost(F);
   const profM=F*R-F*VAR-fx, annual=profM*12;
