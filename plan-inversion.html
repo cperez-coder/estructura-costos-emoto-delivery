@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan de inversión · e-moto delivery Venezuela</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0d0b;--bg2:#0f1310;--surface:#141a15;--surface2:#1a2118;--line:#283026;
+    --ink:#eef3e9;--muted:#97a18f;
+    --lime:#c8f94e;--lime-d:#9fd420;--amber:#ff9b42;--red:#ff5d52;--cyan:#46d8c8;--blue:#6e8cff;--violet:#b07cff;--grey:#6c766a;
+    --radius:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:'Hanken Grotesk',system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:radial-gradient(900px 520px at 80% -8%,rgba(200,249,78,.10),transparent 60%),radial-gradient(680px 480px at -8% 10%,rgba(110,140,255,.06),transparent 55%)}
+  body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.03;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 22px}
+  .mono{font-family:'JetBrains Mono',monospace;font-feature-settings:"tnum"}
+
+  /* top bar + switcher */
+  nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:rgba(10,13,11,.78);border-bottom:1px solid var(--line)}
+  .nav-in{max-width:1100px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Bricolage Grotesque';font-weight:700;letter-spacing:-.02em;font-size:15px}
+  .brand .dot{width:11px;height:11px;border-radius:50%;background:var(--lime);box-shadow:0 0 14px var(--lime);animation:pulse 2.4s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .switch{display:flex;gap:6px;background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:5px}
+  .switch button{border:none;background:none;color:var(--muted);font-family:'Hanken Grotesk';font-weight:600;font-size:13.5px;padding:9px 15px;border-radius:8px;cursor:pointer;transition:.18s;white-space:nowrap}
+  .switch button:hover{color:var(--ink)}
+  .switch button.on{background:var(--lime);color:#10130b}
+  @media(max-width:640px){.switch{width:100%;justify-content:space-between}.switch button{padding:9px 10px;font-size:12.5px}}
+
+  .module{display:none}
+  .module.active{display:block}
+
+  header{padding:46px 0 22px}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--lime-d);margin-bottom:14px}
+  h1{font-family:'Bricolage Grotesque';font-weight:800;letter-spacing:-.035em;line-height:.97;font-size:clamp(34px,6.5vw,64px)}
+  h1 .glow{color:var(--lime);text-shadow:0 0 38px rgba(200,249,78,.35)}
+  .lede{max-width:660px;margin-top:16px;font-size:clamp(15px,2vw,18px);color:var(--muted)}
+  .lede b{color:var(--ink);font-weight:600}
+
+  section{padding:34px 0}
+  .calc{display:grid;grid-template-columns:0.9fr 1.1fr;gap:22px}
+  @media(max-width:900px){.calc{grid-template-columns:1fr}}
+  .panel{background:linear-gradient(180deg,var(--surface),var(--bg2));border:1px solid var(--line);border-radius:var(--radius);padding:22px}
+  .ctrl{margin-bottom:17px}.ctrl:last-child{margin-bottom:0}
+  .ctrl label{display:flex;justify-content:space-between;align-items:baseline;font-size:13.5px;color:var(--muted);margin-bottom:8px}
+  .ctrl label b{color:var(--ink);font-weight:500}
+  .ctrl label .v{font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:15px;font-weight:500}
+  input[type=range]{-webkit-appearance:none;width:100%;height:6px;border-radius:6px;background:linear-gradient(90deg,var(--lime) var(--p,40%),var(--line) var(--p,40%));outline:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:19px;height:19px;border-radius:50%;background:var(--ink);border:3px solid var(--lime);cursor:pointer;box-shadow:0 2px 9px rgba(0,0,0,.55)}
+  input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--ink);border:3px solid var(--lime);cursor:pointer}
+  .hint{font-size:11px;color:var(--grey);margin-top:6px;font-family:'JetBrains Mono',monospace}
+
+  .verdict{border-radius:13px;padding:14px 17px;margin-bottom:16px;display:flex;align-items:center;gap:12px;border:1px solid;background:rgba(200,249,78,.08);border-color:#3a4d1f}
+  .verdict .vi{font-size:26px}.verdict .vt{font-family:'Bricolage Grotesque';font-weight:700;font-size:17px;line-height:1.1}.verdict .vs{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .verdict.warn{background:rgba(255,155,66,.08);border-color:#4d3c1f}
+
+  .cards3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  @media(max-width:680px){.cards3{grid-template-columns:1fr}}
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:520px){.twocol{grid-template-columns:1fr}}
+  .pcard{background:var(--bg2);border:1px solid var(--line);border-radius:13px;padding:16px;border-top:3px solid var(--line)}
+  .pcard.inv{border-top-color:var(--blue)}.pcard.op{border-top-color:var(--lime)}.pcard.rid{border-top-color:var(--amber)}.pcard.hl{border-top-color:var(--lime);background:rgba(200,249,78,.04)}
+  .pcard .pt{font-family:'Bricolage Grotesque';font-weight:700;font-size:15px;margin-bottom:11px;display:flex;align-items:center;gap:7px}
+  .pl{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;border-bottom:1px solid var(--line);font-size:12.5px}
+  .pl:last-child{border-bottom:none}.pl .l{color:var(--muted)}.pl .n{font-family:'JetBrains Mono',monospace;color:var(--ink);font-size:14px}
+  .pl.hero .n{font-size:20px;font-weight:600}
+  .pos{color:var(--lime)!important}.bluev{color:var(--blue)!important}.neg{color:var(--amber)!important}.negr{color:var(--red)!important}
+
+  .timeline{margin-top:16px}.tt{font-size:12px;color:var(--muted);margin-bottom:7px}
+  .track{position:relative;display:flex;height:30px;border-radius:9px;overflow:hidden;border:1px solid var(--line);background:var(--bg2)}
+  .track .recover{height:100%;background:repeating-linear-gradient(45deg,rgba(110,140,255,.30),rgba(110,140,255,.30) 6px,rgba(110,140,255,.14) 6px,rgba(110,140,255,.14) 12px);transition:width .4s}
+  .track .recover.amb{background:repeating-linear-gradient(45deg,rgba(255,155,66,.28),rgba(255,155,66,.28) 6px,rgba(255,155,66,.12) 6px,rgba(255,155,66,.12) 12px)}
+  .track .profit{height:100%;background:linear-gradient(90deg,rgba(200,249,78,.25),rgba(200,249,78,.5));transition:width .4s}
+  .tlabels{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;margin-top:6px}
+  .tlabels .a{color:var(--blue)}.tlabels .a.amb{color:var(--amber)}.tlabels .b{color:var(--lime)}
+
+  .strip{margin-top:16px;background:var(--surface2);border:1px solid var(--line);border-radius:13px;padding:15px 17px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  @media(max-width:520px){.strip{grid-template-columns:1fr}}
+  .strip .fc .fl{font-size:11px;color:var(--muted)}.strip .fc .fv{font-family:'Bricolage Grotesque';font-weight:700;font-size:21px;margin-top:2px}
+
+  /* scaling */
+  .bigrow{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media(max-width:760px){.bigrow{grid-template-columns:1fr 1fr}}
+  .bigstat{background:linear-gradient(180deg,var(--surface),var(--bg2));border:1px solid var(--line);border-radius:14px;padding:18px;position:relative;overflow:hidden}
+  .bigstat .k{font-family:'Bricolage Grotesque';font-weight:800;font-size:clamp(22px,3.2vw,30px);letter-spacing:-.03em}
+  .bigstat .l{font-size:12px;color:var(--muted);margin-top:3px}
+  .bigstat::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:100%;background:linear-gradient(90deg,var(--lime),transparent)}
+  .chart{margin-top:8px;background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .chart .ct{font-size:12.5px;color:var(--muted);margin-bottom:16px;display:flex;justify-content:space-between}
+  .bars{display:flex;align-items:flex-end;gap:10px;height:180px}
+  .bar{flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;height:100%;justify-content:flex-end}
+  .bar .col{width:100%;max-width:46px;background:linear-gradient(180deg,var(--lime),var(--lime-d));border-radius:6px 6px 0 0;transition:height .5s;min-height:3px}
+  .bar .bv{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--ink)}
+  .bar .bx{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--grey)}
+  .split2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+  @media(max-width:760px){.split2{grid-template-columns:1fr}}
+  .infobox{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .infobox h4{font-family:'Bricolage Grotesque';font-weight:700;font-size:15px;margin-bottom:12px;display:flex;align-items:center;gap:7px}
+  .il{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--line);font-size:13px}
+  .il:last-child{border-bottom:none}.il .l{color:var(--muted)}.il .n{font-family:'JetBrains Mono',monospace}
+
+  .phases{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:16px}
+  @media(max-width:820px){.phases{grid-template-columns:1fr}}
+  .phase{background:linear-gradient(180deg,var(--surface),var(--bg2));border:1px solid var(--line);border-radius:14px;padding:18px;border-top:3px solid var(--lime)}
+  .phase .pn{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--lime-d);letter-spacing:.1em}
+  .phase h4{font-family:'Bricolage Grotesque';font-weight:700;font-size:16px;margin:5px 0 8px}
+  .phase p{font-size:13px;color:var(--muted)}.phase b{color:var(--ink)}
+
+  .note{display:flex;gap:13px;background:linear-gradient(120deg,rgba(255,155,66,.07),rgba(20,26,21,.4));border:1px solid #3a3322;border-radius:14px;padding:16px 18px;margin-top:16px}
+  .note .ic{font-size:18px}.note p{font-size:13.5px;color:var(--muted)}.note b{color:var(--ink)}
+  footer{border-top:1px solid var(--line);padding:30px 0 56px;color:var(--grey);font-size:12px;margin-top:30px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-in">
+    <div class="brand"><span class="dot"></span>PLAN DE INVERSIÓN · e-moto delivery VE</div>
+    <div class="switch" id="switch">
+      <button data-m="inv">💼 Inversor</button>
+      <button data-m="op" class="on">🛠️ Mi operación</button>
+      <button data-m="scale">📈 Escalado</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ MÓDULO: INVERSOR ============ -->
+<div class="module" data-m="inv">
+  <header><div class="wrap">
+    <div class="eyebrow">Modelo capital-light · apadrina una moto</div>
+    <h1>El capital lo ponen <span class="glow">otros.</span></h1>
+    <p class="lede">Un inversor compra la moto, tú la operas en tu red, el rider trabaja. Mira <b>en cuánto recupera el inversor</b> y cuánto ganas tú <b>sin poner capital</b>.</p>
+  </div></header>
+  <section><div class="wrap"><div class="calc">
+    <div class="panel">
+      <div class="ctrl"><label><b>Costo de la moto</b> <span class="v" id="inv_C">$2.500</span></label><input type="range" id="inv_Cr" min="1000" max="3500" step="50" value="2500"><div class="hint">lo pone el inversor</div></div>
+      <div class="ctrl"><label><b>Alquiler del rider</b> <span class="v" id="inv_R">$170</span></label><input type="range" id="inv_Rr" min="100" max="280" step="5" value="170"></div>
+      <div class="ctrl"><label><b>Gasto de operación (G)</b> <span class="v" id="inv_G">$40</span></label><input type="range" id="inv_Gr" min="20" max="80" step="2" value="40"><div class="hint">mantenim. + GPS + reserva robo + soporte</div></div>
+      <div class="ctrl"><label><b>Pago mensual al inversor</b> <span class="v" id="inv_S">$90</span></label><input type="range" id="inv_Sr" min="40" max="140" step="5" value="90"><div class="hint" id="inv_splitH">inversor $90 · tú $40</div></div>
+      <div class="ctrl"><label><b>Motos en la red</b> <span class="v" id="inv_N">15</span></label><input type="range" id="inv_Nr" min="1" max="100" step="1" value="15"></div>
+      <div class="ctrl"><label><b>Vida de la moto</b> <span class="v" id="inv_L">48 meses</span></label><input type="range" id="inv_Lr" min="24" max="60" step="3" value="48"></div>
+    </div>
+    <div class="panel">
+      <div class="verdict" id="inv_verdict"><span class="vi" id="inv_vi">✅</span><div><div class="vt" id="inv_vt">—</div><div class="vs" id="inv_vs">—</div></div></div>
+      <div class="cards3">
+        <div class="pcard inv"><div class="pt" style="color:var(--blue)">💼 Inversor</div>
+          <div class="pl"><span class="l">Invierte</span><span class="n" id="inv_iInv">—</span></div>
+          <div class="pl"><span class="l">Recibe/mes</span><span class="n bluev" id="inv_iM">—</span></div>
+          <div class="pl hero"><span class="l">Recupera en</span><span class="n bluev" id="inv_iPb">—</span></div>
+          <div class="pl"><span class="l">Gana (vida)</span><span class="n pos" id="inv_iPr">—</span></div>
+          <div class="pl"><span class="l">Rendimiento</span><span class="n pos" id="inv_iRet">—</span></div></div>
+        <div class="pcard op"><div class="pt" style="color:var(--lime)">🛠️ Tú</div>
+          <div class="pl"><span class="l">Tu capital</span><span class="n pos" id="inv_oCap">$0</span></div>
+          <div class="pl"><span class="l">Margen/moto</span><span class="n pos" id="inv_oM">—</span></div>
+          <div class="pl hero"><span class="l" id="inv_oFL">15 motos/mes</span><span class="n pos" id="inv_oF">—</span></div>
+          <div class="pl"><span class="l">Al año</span><span class="n pos" id="inv_oY">—</span></div></div>
+        <div class="pcard rid"><div class="pt" style="color:var(--amber)">🛵 Rider</div>
+          <div class="pl"><span class="l">Paga</span><span class="n" id="inv_rP">—</span></div>
+          <div class="pl hero"><span class="l">Le queda</span><span class="n pos" id="inv_rN">—</span></div>
+          <div class="pl"><span class="l">vs gasolina</span><span class="n pos" id="inv_rV">—</span></div>
+          <div class="pl"><span class="l">¿Acepta?</span><span class="n pos" id="inv_rOk">—</span></div></div>
+      </div>
+      <div class="timeline"><div class="tt">Recuperación del inversor vs ganancia (sobre vida de la moto)</div>
+        <div class="track"><div class="recover" id="inv_tR"></div><div class="profit" id="inv_tP"></div></div>
+        <div class="tlabels"><span class="a" id="inv_tA">—</span><span class="b" id="inv_tB">—</span></div></div>
+      <div class="strip">
+        <div class="fc"><div class="fl">Capital total de la red</div><div class="fv bluev" id="inv_nCap">—</div></div>
+        <div class="fc"><div class="fl">Tu ingreso/año (sin capital)</div><div class="fv pos" id="inv_nYou">—</div></div>
+        <div class="fc"><div class="fl">Pagado a inversores/año</div><div class="fv bluev" id="inv_nInv">—</div></div>
+      </div>
+    </div>
+  </div></div></section>
+</div>
+
+<!-- ============ MÓDULO: MI OPERACIÓN ============ -->
+<div class="module active" data-m="op">
+  <header><div class="wrap">
+    <div class="eyebrow">Alquiler puro · tú eres dueño de las motos</div>
+    <h1>¿Es rentable? <span class="glow">Sí.</span></h1>
+    <p class="lede">El negocio en 5 números: lo que cuesta la moto, lo que cobras, lo que gastas, lo que ganas y <b>en cuántos meses lo recuperas</b>.</p>
+  </div></header>
+  <section><div class="wrap"><div class="calc">
+    <div class="panel">
+      <div class="ctrl"><label><b>1 · Te cuesta la moto</b> <span class="v" id="op_C">$2.500</span></label><input type="range" id="op_Cr" min="1000" max="3500" step="50" value="2500"><div class="hint">CR1 importada ~$1.900–2.500 · local ~$1.200–1.400</div></div>
+      <div class="ctrl"><label><b>2 · Cobras al mes</b> <span class="v" id="op_R">$170</span></label><input type="range" id="op_Rr" min="80" max="280" step="5" value="170"><div class="hint">alquiler de moto gasolina hoy: ~$215</div></div>
+      <div class="ctrl"><label><b>3 · Gastas al mes (operar)</b> <span class="v" id="op_G">$40</span></label><input type="range" id="op_Gr" min="20" max="80" step="2" value="40"><div class="hint">mantenim. $15 + luz $3 + reserva robo $10 + ayudante $12</div></div>
+      <div class="ctrl"><label><b>Número de motos</b> <span class="v" id="op_N">15</span></label><input type="range" id="op_Nr" min="1" max="50" step="1" value="15"></div>
+      <div class="ctrl"><label><b>Vida de la moto</b> <span class="v" id="op_L">48 meses</span></label><input type="range" id="op_Lr" min="24" max="60" step="3" value="48"><div class="hint">batería LFP (CR1) = más vida</div></div>
+    </div>
+    <div class="panel">
+      <div class="verdict" id="op_verdict"><span class="vi" id="op_vi">✅</span><div><div class="vt" id="op_vt">—</div><div class="vs" id="op_vs">—</div></div></div>
+      <div class="twocol">
+        <div class="pcard"><div class="pt">Por moto</div>
+          <div class="pl"><span class="l">Ganas/mes (R−G)</span><span class="n pos" id="op_mP">—</span></div>
+          <div class="pl hero"><span class="l">Recuperas en</span><span class="n" id="op_mPb">—</span></div>
+          <div class="pl"><span class="l">Ganancia en su vida</span><span class="n pos" id="op_mL">—</span></div></div>
+        <div class="pcard hl"><div class="pt" id="op_fT">Flota · 15 motos</div>
+          <div class="pl"><span class="l">Inviertes</span><span class="n" id="op_fI">—</span></div>
+          <div class="pl"><span class="l">Caja neta/mes</span><span class="n pos" id="op_fN">—</span></div>
+          <div class="pl"><span class="l">Ganancia/año</span><span class="n pos" id="op_fY">—</span></div>
+          <div class="pl hero"><span class="l">Ganancia total (vida)</span><span class="n pos" id="op_fL">—</span></div></div>
+      </div>
+      <div class="timeline"><div class="tt">Recuperación vs ganancia (sobre vida de la moto)</div>
+        <div class="track"><div class="recover amb" id="op_tR"></div><div class="profit" id="op_tP"></div></div>
+        <div class="tlabels"><span class="a amb" id="op_tA">—</span><span class="b" id="op_tB">—</span></div></div>
+      <div class="strip" style="grid-template-columns:1fr">
+        <div class="fc"><div class="fl">🛵 El rider se lleva (vs $245 en gasolina)</div><div class="fv pos" id="op_rN">—</div></div>
+      </div>
+    </div>
+  </div></div></section>
+</div>
+
+<!-- ============ MÓDULO: ESCALADO ============ -->
+<div class="module" data-m="scale">
+  <header><div class="wrap">
+    <div class="eyebrow">Reinvertir todo · crecimiento de flota, infraestructura y equipo</div>
+    <h1>El <span class="glow">escalado</span> correcto.</h1>
+    <p class="lede">Reinviertes cada dólar que se acumula y la flota crece sola. Modela la <b>curva-J</b> inicial, los costos escalonados (estaciones, hubs, personal) y cuánto vale el negocio al final. Pensado como un fondo.</p>
+  </div></header>
+  <section><div class="wrap"><div class="calc">
+    <div class="panel">
+      <div class="ctrl"><label><b>Capital inicial</b> <span class="v" id="sc_cap">$30.000</span></label><input type="range" id="sc_capr" min="5000" max="200000" step="5000" value="30000"></div>
+      <div class="ctrl"><label><b>Inversión externa / mes</b> <span class="v" id="sc_inj">$0</span></label><input type="range" id="sc_injr" min="0" max="30000" step="1000" value="0"><div class="hint">capital de inversores que entra cada mes (acelera)</div></div>
+      <div class="ctrl"><label><b>Costo por moto (lista)</b> <span class="v" id="sc_C">$2.500</span></label><input type="range" id="sc_Cr" min="1200" max="3200" step="50" value="2500"></div>
+      <div class="ctrl"><label><b>Alquiler / mes</b> <span class="v" id="sc_R">$170</span></label><input type="range" id="sc_Rr" min="120" max="240" step="5" value="170"></div>
+      <div class="ctrl"><label><b>Reinversión de la ganancia</b> <span class="v" id="sc_reinv">100%</span></label><input type="range" id="sc_reinvr" min="40" max="100" step="5" value="100"><div class="hint">el resto lo retiras como dividendo</div></div>
+      <div class="ctrl"><label><b>Robo/pérdida anual</b> <span class="v" id="sc_loss">8%</span></label><input type="range" id="sc_lossr" min="0" max="20" step="1" value="8"><div class="hint">motos perdidas/año — el gran riesgo</div></div>
+      <div class="ctrl"><label><b>Horizonte</b> <span class="v" id="sc_H">60 meses</span></label><input type="range" id="sc_Hr" min="24" max="84" step="6" value="60"></div>
+    </div>
+    <div class="panel">
+      <div class="verdict" id="sc_verdict"><span class="vi" id="sc_vi">📈</span><div><div class="vt" id="sc_vt">—</div><div class="vs" id="sc_vs">—</div></div></div>
+      <div class="bigrow">
+        <div class="bigstat"><div class="k" id="sc_fleet">—</div><div class="l">Flota al final</div></div>
+        <div class="bigstat"><div class="k pos" id="sc_profM">—</div><div class="l">Ganancia / mes (final)</div></div>
+        <div class="bigstat"><div class="k pos" id="sc_cum">—</div><div class="l">Ganancia acumulada</div></div>
+        <div class="bigstat"><div class="k" id="sc_val">—</div><div class="l">Valor del negocio</div></div>
+      </div>
+      <div class="strip" style="margin-top:14px">
+        <div class="fc"><div class="fl">Capital total puesto</div><div class="fv" id="sc_inv">—</div></div>
+        <div class="fc"><div class="fl">Break-even (flota cubre fijos)</div><div class="fv pos" id="sc_be">—</div></div>
+        <div class="fc"><div class="fl">Caja mínima (fondo de la curva-J)</div><div class="fv" id="sc_min">—</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart">
+    <div class="ct"><span>Crecimiento de la flota (reinvirtiendo todo)</span><span class="mono" id="sc_chartmax">—</span></div>
+    <div class="bars" id="sc_bars"></div>
+  </div>
+
+  <div class="split2">
+    <div class="infobox"><h4>🏗️ Infraestructura al final</h4>
+      <div class="il"><span class="l">🛵 Motos en flota</span><span class="n" id="sc_iMotos">—</span></div>
+      <div class="il"><span class="l">🔋 Baterías de repuesto</span><span class="n" id="sc_iBatt">—</span></div>
+      <div class="il"><span class="l">⚡ Estaciones de carga/swap</span><span class="n" id="sc_iSt">—</span></div>
+      <div class="il"><span class="l">🏠 Hubs / talleres</span><span class="n" id="sc_iHub">—</span></div>
+      <div class="il"><span class="l">📍 Inversión en infraestructura</span><span class="n" id="sc_iCapex">—</span></div>
+    </div>
+    <div class="infobox"><h4>👥 Equipo al final</h4>
+      <div class="il"><span class="l">🔧 Mecánicos/técnicos</span><span class="n" id="sc_sMech">—</span></div>
+      <div class="il"><span class="l">🛻 Operaciones de campo</span><span class="n" id="sc_sOps">—</span></div>
+      <div class="il"><span class="l">📞 Atención / cobranza</span><span class="n" id="sc_sCs">—</span></div>
+      <div class="il"><span class="l">👔 Gerentes de operación</span><span class="n" id="sc_sMgr">—</span></div>
+      <div class="il"><span class="l">Nómina total / mes</span><span class="n" id="sc_sCost">—</span></div>
+    </div>
+  </div>
+
+  <div class="wrap" style="padding:0">
+    <div class="phases">
+      <div class="phase"><div class="pn">FASE 1 · 0–50 motos</div><h4>Prueba el motor</h4><p>Tú haces casi todo. Cuidado con la <b>curva-J</b>: los primeros costos fijos (un hub, un ayudante) te hacen perder hasta cubrir ~8–12 motos. Demuestra unidad económica y que el robo está controlado.</p></div>
+      <div class="phase"><div class="pn">FASE 2 · 50–250 motos</div><h4>Construye la máquina</h4><p>Sistemas, mecánicos, estaciones de swap, gerente de operaciones. Aquí <b>metes capital de inversores</b> para acelerar (cada moto se autofinancia lento). Cierra contratos B2B con plataformas (Yummy, PedidosYa).</p></div>
+      <div class="phase"><div class="pn">FASE 3 · 250+ motos</div><h4>Domina y expande</h4><p>Otras ciudades, ensamblaje/importación a escala para bajar el costo por moto, y un margen que ya aplasta los costos fijos. El negocio vale un múltiplo de su ganancia anual.</p></div>
+    </div>
+    <div class="note"><span class="ic">🎯</span><p><b>La regla del escalado:</b> no crezcas más rápido de lo que controlas el robo y las cobranzas. Una flota grande con 15% de robo pierde dinero; una flota mediana con 5% de robo y buen GPS es una máquina de imprimir. <b>Primero el control, después el tamaño.</b></p></div>
+  </div>
+  </div></section>
+</div>
+
+<footer><div class="wrap">Modelo financiero ilustrativo · USD · Venezuela 2026. Los ratios de personal e infraestructura son supuestos de operador sénior (1 mecánico ~55 motos, 1 ops ~35, 1 hub ~70, 1 estación ~50). Ajusta a tu realidad. La curva-J y el costo de robo son reales: contrólalos.</div></footer>
+
+<script>
+const ID=id=>document.getElementById(id);
+const f0=n=>'$'+new Intl.NumberFormat('es-ES',{maximumFractionDigits:0}).format(Math.round(n));
+const fk=n=>Math.abs(n)>=1000?'$'+(n/1000).toFixed(n>=100000?0:1)+'k':f0(n);
+const months=m=>(m<10?m.toFixed(1):Math.round(m))+' m';
+function paint(el){const mn=+el.min,mx=+el.max,v=+el.value;el.style.setProperty('--p',((v-mn)/(mx-mn)*100)+'%');}
+const v=id=>+ID(id).value;
+
+/* ---------- MÓDULO INVERSOR ---------- */
+function invC(){
+  const C=v('inv_Cr'),R=v('inv_Rr'),G=v('inv_Gr'),N=v('inv_Nr'),L=v('inv_Lr');
+  let inv=v('inv_Sr'); const dist=R-G; if(inv>dist) inv=Math.max(0,dist); const op=dist-inv;
+  ID('inv_C').textContent=f0(C);ID('inv_R').textContent=f0(R);ID('inv_G').textContent=f0(G);ID('inv_N').textContent=N;ID('inv_L').textContent=L+' meses';ID('inv_S').textContent=f0(inv);
+  ID('inv_splitH').textContent='inversor '+f0(inv)+' · tú '+f0(op);
+  const pb=inv>0?C/inv:Infinity, prof=inv*L-C, ret=C>0?prof/C*100:0, yr=ret/(L/12);
+  ID('inv_iInv').textContent=f0(C);ID('inv_iM').textContent=f0(inv);
+  ID('inv_iPb').textContent=isFinite(pb)?months(pb):'—';
+  ID('inv_iPr').textContent=(prof>=0?'+':'')+f0(prof);ID('inv_iPr').className='n '+(prof>=0?'pos':'neg');
+  ID('inv_iRet').textContent=(ret>=0?'+':'')+Math.round(ret)+'% (~'+Math.round(yr)+'%/a)';ID('inv_iRet').className='n '+(ret>=0?'pos':'neg');
+  ID('inv_oM').textContent=(op>=0?'+':'')+f0(op);ID('inv_oM').className='n '+(op>0?'pos':'neg');
+  ID('inv_oFL').textContent=N+' motos/mes';ID('inv_oF').textContent=(op>=0?'+':'')+f0(op*N);ID('inv_oF').className='n '+(op>0?'pos':'neg');
+  ID('inv_oY').textContent=(op>=0?'+':'')+f0(op*N*12);ID('inv_oY').className='n '+(op>0?'pos':'neg');
+  const rN=500-R-2,vs=rN-245,ok=R<250;
+  ID('inv_rP').textContent=f0(R);ID('inv_rN').textContent=f0(rN);ID('inv_rV').textContent=(vs>=0?'+':'')+f0(vs);ID('inv_rV').className='n '+(vs>=0?'pos':'neg');
+  ID('inv_rOk').textContent=ok?'Sí ✓':'Caro';ID('inv_rOk').className='n '+(ok?'pos':'neg');
+  const rec=isFinite(pb)?Math.min(100,pb/L*100):100;ID('inv_tR').style.width=rec+'%';ID('inv_tP').style.width=(100-rec)+'%';
+  ID('inv_tA').textContent=isFinite(pb)?('recupera en '+months(pb)):'no recupera';ID('inv_tB').textContent=Math.max(0,Math.round(L-pb))+' m de ganancia';
+  ID('inv_nCap').textContent=fk(C*N);ID('inv_nYou').textContent=fk(op*N*12);ID('inv_nInv').textContent=fk(inv*N*12);
+  const vd=ID('inv_verdict');
+  if(op<=0){vd.className='verdict warn';ID('inv_vi').textContent='⚠️';ID('inv_vt').textContent='No te queda margen';ID('inv_vs').textContent='Le das al inversor todo. Bájale el pago o sube el alquiler.';}
+  else if(!isFinite(pb)||pb>=L){vd.className='verdict warn';ID('inv_vi').textContent='⚠️';ID('inv_vt').textContent='El inversor no recupera a tiempo';ID('inv_vs').textContent='Súbele el pago o baja el costo de la moto.';}
+  else{vd.className='verdict';ID('inv_vi').textContent='✅';ID('inv_vt').textContent='Funciona para los tres';ID('inv_vs').textContent='Inversor recupera en '+months(pb)+' (+'+Math.round(ret)+'%). Tú: '+f0(op*N)+'/mes con $0.';}
+}
+
+/* ---------- MÓDULO OPERACIÓN ---------- */
+function opC(){
+  const C=v('op_Cr'),R=v('op_Rr'),G=v('op_Gr'),N=v('op_Nr'),L=v('op_Lr');
+  ID('op_C').textContent=f0(C);ID('op_R').textContent=f0(R);ID('op_G').textContent=f0(G);ID('op_N').textContent=N;ID('op_L').textContent=L+' meses';
+  const pm=R-G, pb=pm>0?C/pm:Infinity, life=R*L-C-G*L;
+  ID('op_mP').textContent=(pm>=0?'+':'')+f0(pm)+'/mes';ID('op_mP').className='n '+(pm>0?'pos':'negr');
+  ID('op_mPb').textContent=isFinite(pb)?months(pb):'nunca';ID('op_mPb').className='n '+(isFinite(pb)&&pb<L?'':'neg');
+  ID('op_mL').textContent=(life>=0?'+':'')+f0(life);ID('op_mL').className='n '+(life>=0?'pos':'negr');
+  ID('op_fT').textContent='Flota · '+N+' motos';
+  ID('op_fI').textContent=fk(C*N);ID('op_fN').textContent=(pm>=0?'+':'')+f0(pm*N);ID('op_fN').className='n '+(pm>0?'pos':'negr');
+  ID('op_fY').textContent=(pm>=0?'+':'')+fk(pm*N*12);ID('op_fY').className='n '+(pm>0?'pos':'negr');
+  ID('op_fL').textContent=(life>=0?'+':'')+fk(life*N);ID('op_fL').className='n '+(life>=0?'pos':'negr');
+  const rec=isFinite(pb)?Math.min(100,pb/L*100):100;ID('op_tR').style.width=rec+'%';ID('op_tP').style.width=(100-rec)+'%';
+  ID('op_tA').textContent=isFinite(pb)?('recuperas en '+months(pb)):'no recuperas';ID('op_tB').textContent=Math.max(0,Math.round(L-pb))+' m de pura ganancia';
+  const rN=500-R-2,vs=rN-245;ID('op_rN').textContent=f0(rN)+'  ('+(vs>=0?'+':'')+f0(vs)+')';
+  const vd=ID('op_verdict');
+  if(pm<=0){vd.className='verdict warn';ID('op_vi').textContent='❌';ID('op_vt').textContent='Pierdes dinero';ID('op_vs').textContent='Cobras menos de lo que gastas. Sube el alquiler.';}
+  else if(!isFinite(pb)||pb>=L){vd.className='verdict warn';ID('op_vi').textContent='❌';ID('op_vt').textContent='No recuperas a tiempo';ID('op_vs').textContent='La moto se muere antes. Baja el costo o sube el alquiler.';}
+  else if(pb<=L*0.45){vd.className='verdict';ID('op_vi').textContent='🟢';ID('op_vt').textContent='Muy rentable';ID('op_vs').textContent='Recuperas en '+months(pb)+'; luego '+f0(pm*N)+'/mes con '+N+' motos.';}
+  else{vd.className='verdict';ID('op_vi').textContent='✅';ID('op_vt').textContent='Rentable';ID('op_vs').textContent='Recuperas en '+months(pb)+'; después '+fk(pm*N*12)+'/año.';}
+}
+
+/* ---------- MÓDULO ESCALADO ---------- */
+function staff(F){
+  const base=400;
+  const ops=Math.ceil(F/35)*260;
+  const mech=F>=30?Math.ceil(F/55)*420:0;
+  const cs=F>=70?Math.ceil(F/110)*340:0;
+  const mgr=F>=140?Math.ceil(F/160)*750:0;
+  return {nMech:F>=30?Math.ceil(F/55):0,nOps:Math.ceil(F/35),nCs:F>=70?Math.ceil(F/110):0,nMgr:F>=140?Math.ceil(F/160):0,
+          cost:base+ops+mech+cs+mgr};
+}
+function fixedCost(F){const s=staff(F);return s.cost+Math.ceil(F/70)*300+Math.ceil(F/50)*45;}
+function scC(){
+  const C=v('sc_Cr'),R=v('sc_Rr'),cap=v('sc_capr'),inj=v('sc_injr'),reinv=v('sc_reinvr')/100,loss=v('sc_lossr')/100,H=v('sc_Hr');
+  ID('sc_cap').textContent=f0(cap);ID('sc_inj').textContent=f0(inj);ID('sc_C').textContent=f0(C);ID('sc_R').textContent=f0(R);
+  ID('sc_reinv').textContent=Math.round(reinv*100)+'%';ID('sc_loss').textContent=Math.round(loss*100)+'%';ID('sc_H').textContent=H+' meses';
+  const VAR=23, BATT=Math.round(0.35*350), ST_CX=2200, HUB_CX=2000;
+  let cash=cap,F=0,invested=cap,cum=0,minCash=cap,beMonth=0;
+  const series=[],ms={};
+  function onb(nF){let c=C+BATT;if(Math.ceil(nF/50)>Math.ceil((nF-1)/50))c+=ST_CX;if(Math.ceil(nF/70)>Math.ceil((nF-1)/70))c+=HUB_CX;return c;}
+  function buy(budget){while(true){const c=onb(F+1);if(budget>=c){budget-=c;cash-=c;F++;}else break;}}
+  buy(cash);
+  for(let m=1;m<=H;m++){
+    F=Math.max(0,F-F*loss/12);
+    const rev=F*R,varc=F*VAR,fx=fixedCost(F),profit=rev-varc-fx;
+    cash+=profit+inj;invested+=inj;cum+=profit;
+    if(profit>0)cash-=profit*(1-reinv);
+    if(beMonth===0&&profit>0)beMonth=m;
+    minCash=Math.min(minCash,cash);
+    buy(Math.max(0,cash-150));
+    [50,100,250,500,1000].forEach(k=>{if(!ms[k]&&F>=k)ms[k]=m;});
+    if(m%12===0||m===H)series.push({y:m/12,F:Math.round(F)});
+  }
+  const Ff=Math.round(F),s=staff(F),fx=fixedCost(F);
+  const profM=F*R-F*VAR-fx, annual=profM*12;
+  const stations=Math.ceil(F/50),hubs=Math.ceil(F/70),batt=Math.round(F*0.35);
+  const infraCapex=stations*ST_CX+hubs*HUB_CX+batt*350;
+  const assetVal=F*C*0.30, bizVal=Math.max(0,annual)*3, val=assetVal+bizVal;
+  ID('sc_fleet').textContent=Ff+' motos';
+  ID('sc_profM').textContent=(profM>=0?'+':'')+fk(profM);
+  ID('sc_cum').textContent=fk(cum);
+  ID('sc_val').textContent=fk(val);
+  ID('sc_inv').textContent=fk(invested);
+  ID('sc_be').textContent=beMonth?('mes '+beMonth):'—';
+  ID('sc_min').textContent=fk(minCash);
+  ID('sc_iMotos').textContent=Ff;ID('sc_iBatt').textContent=batt;ID('sc_iSt').textContent=stations;ID('sc_iHub').textContent=hubs;ID('sc_iCapex').textContent=fk(infraCapex);
+  ID('sc_sMech').textContent=s.nMech;ID('sc_sOps').textContent=s.nOps;ID('sc_sCs').textContent=s.nCs;ID('sc_sMgr').textContent=s.nMgr;ID('sc_sCost').textContent=fk(s.cost);
+  // chart
+  const mx=Math.max(...series.map(p=>p.F),1);
+  ID('sc_chartmax').textContent='máx '+mx+' motos';
+  ID('sc_bars').innerHTML=series.map(p=>`<div class="bar"><div class="bv">${p.F}</div><div class="col" style="height:${Math.max(3,p.F/mx*100)}%"></div><div class="bx">año ${p.y}</div></div>`).join('');
+  // verdict
+  const vd=ID('sc_verdict');
+  if(profM<=0){vd.className='verdict warn';ID('sc_vi').textContent='⚠️';ID('sc_vt').textContent='No despega';ID('sc_vs').textContent='Los costos fijos o el robo se comen el margen. Sube capital inicial, baja robo o sube alquiler.';}
+  else{vd.className='verdict';ID('sc_vi').textContent='📈';ID('sc_vt').textContent='Crece a '+Ff+' motos en '+H+' meses';ID('sc_vs').textContent='Ganancia final '+fk(profM)+'/mes · negocio vale ~'+fk(val)+' · break-even mes '+(beMonth||'—')+'.';}
+}
+
+/* ---------- wiring ---------- */
+function wire(ids,fn){ids.forEach(id=>{const el=ID(id);el.addEventListener('input',()=>{paint(el);fn();});paint(el);});}
+wire(['inv_Cr','inv_Rr','inv_Gr','inv_Sr','inv_Nr','inv_Lr'],invC);
+wire(['op_Cr','op_Rr','op_Gr','op_Nr','op_Lr'],opC);
+wire(['sc_capr','sc_injr','sc_Cr','sc_Rr','sc_reinvr','sc_lossr','sc_Hr'],scC);
+invC();opC();scC();
+
+document.querySelectorAll('#switch button').forEach(b=>b.addEventListener('click',()=>{
+  const m=b.dataset.m;
+  document.querySelectorAll('#switch button').forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('.module').forEach(mod=>mod.classList.toggle('active',mod.dataset.m===m));
+  window.scrollTo({top:0,behavior:'smooth'});
+}));
+</script>
+</body>
+</html>
