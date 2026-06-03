@@ -30,7 +30,7 @@
   .brand{display:flex;align-items:center;gap:10px;font-family:'Bricolage Grotesque';font-weight:700;letter-spacing:-.02em;font-size:15px}
   .brand .dot{width:11px;height:11px;border-radius:50%;background:var(--lime);box-shadow:0 0 14px var(--lime);animation:pulse 2.4s infinite}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-  .switch{display:flex;gap:6px;background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:5px}
+  .switch{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px;background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:5px}
   .switch button{border:none;background:none;color:var(--muted);font-family:'Hanken Grotesk';font-weight:600;font-size:13.5px;padding:9px 15px;border-radius:8px;cursor:pointer;transition:.18s;white-space:nowrap}
   .switch button:hover{color:var(--ink)}
   .switch button.on{background:var(--lime);color:#10130b}
@@ -45,6 +45,13 @@
   h1 .glow{color:var(--lime);text-shadow:0 0 38px rgba(200,249,78,.35)}
   .lede{max-width:660px;margin-top:16px;font-size:clamp(15px,2vw,18px);color:var(--muted)}
   .lede b{color:var(--ink);font-weight:600}
+  .module h2{font-family:'Bricolage Grotesque';font-weight:700;letter-spacing:-.03em;font-size:clamp(22px,3.6vw,32px);line-height:1.05}
+  .csub{color:var(--muted);max-width:700px;margin:9px 0 22px;font-size:15px}.csub b{color:var(--ink)}
+  .scrollx{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--bg2)}
+  .scrollx .mtable{min-width:520px}
+  .bestrow td{background:rgba(200,249,78,.07)!important}
+  .lay{display:flex;gap:13px;align-items:flex-start;background:linear-gradient(120deg,rgba(110,140,255,.09),rgba(20,26,21,.4));border:1px solid #243049;border-radius:14px;padding:16px 18px;margin-top:14px}
+  .lay .ic{font-size:20px}.lay p{font-size:13.5px;color:var(--muted)}.lay b{color:var(--ink)}
 
   section{padding:34px 0}
   .calc{display:grid;grid-template-columns:0.9fr 1.1fr;gap:22px}
@@ -138,6 +145,7 @@
       <button data-m="inv">💼 Inversor</button>
       <button data-m="op" class="on">🛠️ Mi operación</button>
       <button data-m="scale">📈 Escalado</button>
+      <button data-m="comp">🏁 Competencia</button>
     </div>
   </div>
 </nav>
@@ -301,6 +309,86 @@
     </div>
     <div class="note"><span class="ic">🎯</span><p><b>La regla del escalado:</b> no crezcas más rápido de lo que controlas el robo y las cobranzas. Una flota grande con 15% de robo pierde dinero; una flota mediana con 5% de robo y buen GPS es una máquina de imprimir. <b>Primero el control, después el tamaño.</b></p></div>
   </div>
+  </div></section>
+</div>
+
+<!-- ============ MÓDULO: COMPETENCIA ============ -->
+<div class="module" data-m="comp">
+  <header><div class="wrap">
+    <div class="eyebrow">Competencia · OFERO · benchmark de mercado</div>
+    <h1>OFERO <span class="glow">vende.</span> Tú alquilas.</h1>
+    <p class="lede">OFERO vende motos eléctricas en Venezuela (no alquila). Es tu competencia indirecta: un rider podría <b>comprarles una</b> en vez de alquilarte. Aquí ves su catálogo, su arma comercial (el apartado) y dónde te amenazan vs dónde les ganas.</p>
+  </div></header>
+
+  <section><div class="wrap">
+    <h2>El catálogo de OFERO</h2>
+    <p class="csub">Precios de venta en divisas (USD). Velocidad <b>40–55 km/h</b> · autonomía <b>35–70 km</b> por carga. La gama alta (Stareer) es la única realmente apta para una jornada de delivery.</p>
+    <div class="scrollx">
+      <table class="mtable">
+        <thead><tr><th>Serie</th><th>Modelo</th><th>Precio</th><th>Apto delivery</th></tr></thead>
+        <tbody>
+          <tr><td class="serie">🔵 Ledo</td><td>Ledo 2</td><td>$650</td><td>básico</td></tr>
+          <tr><td class="serie">🔵 Ledo</td><td>Ledo 3</td><td>$780</td><td>básico</td></tr>
+          <tr><td class="serie">🌌 Galaxy</td><td>Galaxy 3</td><td>$810</td><td>medio</td></tr>
+          <tr><td class="serie">🌌 Galaxy</td><td>Galaxy 5</td><td>$870</td><td>medio</td></tr>
+          <tr><td class="serie">⭐ Magical</td><td>Magical 3</td><td>$1.020</td><td>medio-alto</td></tr>
+          <tr><td class="serie">⭐ Magical</td><td>Magical 3 Pro</td><td>$1.080</td><td>medio-alto</td></tr>
+          <tr><td class="serie">🔥 Stareer</td><td>Stareer 2</td><td>$1.120</td><td>alto</td></tr>
+          <tr class="bestrow"><td class="serie">🔥 Stareer</td><td>Stareer 3 ⭐</td><td>$1.290</td><td class="pos">✓ el mejor</td></tr>
+          <tr class="bestrow"><td class="serie">🔥 Stareer</td><td>Stareer 3 Pro</td><td>$1.350</td><td class="pos">✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lay"><span class="ic">🏷️</span><p><b>Su arma comercial — el "apartado":</b> pagas <b>50% inicial</b> y te dan <b>2–3 meses</b> para cancelar el resto. Es decir, un rider se lleva una Galaxy 3 ($810) con <b>~$405 de entrada</b> y termina de pagarla en 2–3 meses. Baja mucho la barrera para que compre en vez de alquilarte: hay que tomarlo en serio.</p></div>
+  </div></section>
+
+  <section><div class="wrap">
+    <h2>El rider: ¿comprar una OFERO o alquilarte a ti?</h2>
+    <p class="csub">La pregunta que se hará tu cliente. Con el apartado, comprar es más fácil de lo que parece — pero tú ganas en lo que de verdad le duele.</p>
+    <div class="twocol">
+      <div class="pcard"><div class="pt">🛒 Comprar OFERO Galaxy 3 (apartado)</div>
+        <div class="pl"><span class="l">Entrada (50%)</span><span class="n">$405</span></div>
+        <div class="pl"><span class="l">Saldo</span><span class="n">2–3 meses</span></div>
+        <div class="pl"><span class="l">Mantenimiento</span><span class="n neg">a su cargo (~$90/m)</span></div>
+        <div class="pl"><span class="l">Si se la roban</span><span class="n negr">pierde $810</span></div>
+        <div class="pl"><span class="l">Velocidad · rango</span><span class="n neg">40–55 km/h · ~45 km</span></div>
+        <div class="pl"><span class="l">Es suya</span><span class="n pos">en ~3 meses ✓</span></div></div>
+      <div class="pcard hl"><div class="pt">🔑 Alquilar tu moto (CR1)</div>
+        <div class="pl"><span class="l">Entrada</span><span class="n pos">$0 (depósito chico)</span></div>
+        <div class="pl"><span class="l">Cuota</span><span class="n">$170/mes todo incluido</span></div>
+        <div class="pl"><span class="l">Mantenimiento</span><span class="n pos">incluido</span></div>
+        <div class="pl"><span class="l">Si se la roban</span><span class="n pos">tu problema, no del rider</span></div>
+        <div class="pl"><span class="l">Velocidad · rango</span><span class="n pos">90 km/h · 85 km</span></div>
+        <div class="pl"><span class="l">Es suya</span><span class="n pos">rent-to-own en 24 meses</span></div></div>
+    </div>
+    <div class="note"><span class="ic">⚖️</span><p><b>La verdad sin humo:</b> el rider con ~$405 en mano y ganas de tener lo suyo barato → te compite OFERO (en ~3 meses es dueño). Pero el <b>rider sin capital</b> (la mayoría), el que no quiere lidiar con mantenimiento ni cargar el riesgo de robo, y el que necesita una moto <b>rápida para avenidas</b> → te alquila a ti. Tu cliente es el que <b>no puede o no quiere poner $405 ni preocuparse de nada</b>.</p></div>
+  </div></section>
+
+  <section><div class="wrap">
+    <h2>Tu moto vs la de ellos</h2>
+    <div class="scrollx">
+      <table class="mtable">
+        <thead><tr><th>Criterio</th><th>Tu Horwin CR1</th><th>OFERO (gama alta)</th></tr></thead>
+        <tbody>
+          <tr><td class="serie">Velocidad máx.</td><td class="pos">90 km/h</td><td class="neg">40–55 km/h</td></tr>
+          <tr><td class="serie">Autonomía</td><td class="pos">85 km (2 baterías)</td><td>35–70 km</td></tr>
+          <tr><td class="serie">Batería</td><td class="pos">LFP (más ciclos, segura)</td><td>—</td></tr>
+          <tr><td class="serie">Modelo de negocio</td><td class="pos">alquiler + servicio (recurrente)</td><td>venta (una vez)</td></tr>
+          <tr><td class="serie">Precio</td><td>~$2.500 importada</td><td class="pos">$650–1.350 venta local</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="csub" style="margin-top:14px">Ellos ganan en <b>precio</b>; tú ganas en <b>velocidad, rango y durabilidad</b> — lo que importa para una moto que trabaja 100+ km al día en avenidas.</p>
+  </div></section>
+
+  <section><div class="wrap">
+    <h2>Cómo les ganas</h2>
+    <div class="phases">
+      <div class="phase"><div class="pn">VENTAJA 01</div><h4>Vendes servicio, no fierro</h4><p>OFERO te entrega la moto y se desentiende. Tú das <b>mantenimiento, GPS, batería, reemplazo y soporte</b> — el rider trabaja sin preocuparse de nada. Eso es lo que hoy lo mata (el mantenimiento se come la mitad de su sueldo).</p></div>
+      <div class="phase"><div class="pn">VENTAJA 02</div><h4>Sin capital de entrada</h4><p>OFERO pide <b>$405</b> para empezar. Tú entras al rider con <b>$0</b> (o un depósito chico). Capturas a la mayoría que no tiene esos $405 hoy.</p></div>
+      <div class="phase"><div class="pn">VENTAJA 03</div><h4>Mejor herramienta + camino a propiedad</h4><p>Tu CR1 va a <b>90 km/h</b> (la suya 40–55) y rinde más. Y con <b>rent-to-own</b>, el rider igual termina siendo dueño — le das lo mejor de OFERO sin sus desventajas.</p></div>
+    </div>
+    <div class="note"><span class="ic">💡</span><p><b>Lectura estratégica (tu llamada):</b> OFERO no es solo competencia — a $1.290 la Stareer 3 <b>puesta en Venezuela</b> (sin importar, sin aduana, con su apartado), es casi la <b>mitad</b> de lo que te cuesta importar la Horwin (~$2.500). Decidiste no comprar local, pero a este precio quizá valga reconsiderar <b>comprarles a ELLOS</b> para tu flota: tu payback bajaría de ~19 a ~10 meses. El costo es una moto algo más lenta. Lo dejo sobre la mesa.</p></div>
   </div></section>
 </div>
 
