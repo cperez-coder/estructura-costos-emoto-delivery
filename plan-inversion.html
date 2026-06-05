@@ -159,7 +159,7 @@
   </div></header>
   <section><div class="wrap"><div class="calc">
     <div class="panel">
-      <div class="ctrl"><label><b>Costo de la moto</b> <span class="v" id="inv_C">$2.750</span></label><input type="range" id="inv_Cr" min="1000" max="3500" step="50" value="2750"><div class="hint">CR1 Config A todo incluido (lo pone el inversor)</div></div>
+      <div class="ctrl"><label><b>Costo de la moto</b> <span class="v" id="inv_C">$2.000</span></label><input type="range" id="inv_Cr" min="1000" max="3500" step="50" value="2000"><div class="hint">Solo la moto puesta en VE (infraestructura aparte) · lo pone el inversor</div></div>
       <div class="ctrl"><label><b>Alquiler del rider</b> <span class="v" id="inv_R">$170</span></label><input type="range" id="inv_Rr" min="100" max="280" step="5" value="170"></div>
       <div class="ctrl"><label><b>Gasto de operación (G)</b> <span class="v" id="inv_G">$50</span></label><input type="range" id="inv_Gr" min="20" max="80" step="2" value="50"><div class="hint">mantenim. + GPS + reserva robo + soporte</div></div>
       <div class="ctrl"><label><b>Pago mensual al inversor</b> <span class="v" id="inv_S">$90</span></label><input type="range" id="inv_Sr" min="40" max="140" step="5" value="90"><div class="hint" id="inv_splitH">inversor $90 · tú $40</div></div>
@@ -207,7 +207,7 @@
   </div></header>
   <section><div class="wrap"><div class="calc">
     <div class="panel">
-      <div class="ctrl"><label><b>1 · Te cuesta la moto</b> <span class="v" id="op_C">$2.750</span></label><input type="range" id="op_Cr" min="1000" max="3500" step="50" value="2750"><div class="hint">CR1 Config A puesta en VE (FOB $1.250 + GPS + import 20% + flete) ≈ $2.750 en el piloto · baja en contenedor lleno</div></div>
+      <div class="ctrl"><label><b>1 · Te cuesta la moto</b> <span class="v" id="op_C">$2.000</span></label><input type="range" id="op_Cr" min="1000" max="3500" step="50" value="2000"><div class="hint">Solo la moto (2 baterías + disco + GPS + Y-cable) puesta en VE ≈ $2.000 · estaciones y repuestos van aparte (infraestructura)</div></div>
       <div class="ctrl"><label><b>2 · Cobras al mes</b> <span class="v" id="op_R">$170</span></label><input type="range" id="op_Rr" min="80" max="280" step="5" value="170"><div class="hint">alquiler de moto gasolina hoy: ~$215</div></div>
       <div class="ctrl"><label><b>3 · Gastas al mes (operar)</b> <span class="v" id="op_G">$50</span></label><input type="range" id="op_Gr" min="20" max="80" step="2" value="50"><div class="hint">mantenim. $22 (cadena+cauchos+frenos) + luz $3 + robo $10 + GPS/SIM $5 + ayudante $10</div></div>
       <div class="ctrl"><label><b>Número de motos</b> <span class="v" id="op_N">15</span></label><input type="range" id="op_Nr" min="1" max="50" step="1" value="15"></div>
@@ -247,7 +247,7 @@
     <div class="panel">
       <div class="ctrl"><label><b>Capital inicial</b> <span class="v" id="sc_cap">$30.000</span></label><input type="range" id="sc_capr" min="5000" max="200000" step="5000" value="30000"></div>
       <div class="ctrl"><label><b>Inversión externa / mes</b> <span class="v" id="sc_inj">$0</span></label><input type="range" id="sc_injr" min="0" max="30000" step="1000" value="0"><div class="hint">capital de inversores que entra cada mes (acelera)</div></div>
-      <div class="ctrl"><label><b>Costo por moto (lista)</b> <span class="v" id="sc_C">$2.750</span></label><input type="range" id="sc_Cr" min="1200" max="3200" step="50" value="2750"></div>
+      <div class="ctrl"><label><b>Costo por moto (lista)</b> <span class="v" id="sc_C">$2.000</span></label><input type="range" id="sc_Cr" min="1200" max="3200" step="50" value="2000"></div>
       <div class="ctrl"><label><b>Alquiler / mes</b> <span class="v" id="sc_R">$170</span></label><input type="range" id="sc_Rr" min="120" max="240" step="5" value="170"></div>
       <div class="ctrl"><label><b>Reinversión de la ganancia</b> <span class="v" id="sc_reinv">100%</span></label><input type="range" id="sc_reinvr" min="40" max="100" step="5" value="100"><div class="hint">el resto lo retiras como dividendo</div></div>
       <div class="ctrl"><label><b>Robo/pérdida anual</b> <span class="v" id="sc_loss">8%</span></label><input type="range" id="sc_lossr" min="0" max="20" step="1" value="8"><div class="hint">motos perdidas/año — el gran riesgo</div></div>
@@ -392,7 +392,7 @@
   </div></section>
 </div>
 
-<footer><div class="wrap">Modelo financiero ilustrativo · USD · Venezuela 2026. Base: cotización Horwin CR1 <b>Config A</b> (doble 30Ah, disco, GPS de vehículo) — moto FOB $1.250, ~$2.750 puesta en VE con arancel real ~20% (8711.60) + 0% baterías (8507.60), a confirmar con agente aduanal. Operación a 100 km/día. Ratios de equipo/infra: supuestos de operador sénior (1 mecánico ~55 motos, 1 ops ~35, 1 hub ~70, 1 estación ~50). La curva-J y el robo son reales: contrólalos.</div></footer>
+<footer><div class="wrap">Modelo financiero ilustrativo · USD · Venezuela 2026. Base: cotización Horwin CR1 <b>Config A</b> (doble 30Ah, disco, GPS de vehículo + Y-cable) — moto FOB $1.280, <b>~$2.000 la MOTA SOLA puesta en VE</b> (arancel ~20% en 8711.60, 0% baterías en 8507.60, a confirmar con agente aduanal). Las estaciones de swap y baterías de repuesto son <b>infraestructura compartida aparte</b> (~$5-12k del piloto), no se cargan al costo por moto. Operación a 100 km/día. Ratios de equipo/infra: supuestos de operador sénior (1 mecánico ~55 motos, 1 ops ~35, 1 hub ~70, 1 estación ~50). La curva-J y el robo son reales: contrólalos.</div></footer>
 
 <script>
 const ID=id=>document.getElementById(id);
