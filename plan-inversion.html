@@ -146,6 +146,7 @@
       <button data-m="op" class="on">🛠️ Mi operación</button>
       <button data-m="scale">📈 Escalado</button>
       <button data-m="comp">🏁 Competencia</button>
+      <button data-m="mix">💸 Vender + Alquilar</button>
     </div>
   </div>
 </nav>
@@ -392,6 +393,48 @@
   </div></section>
 </div>
 
+<!-- ============ MÓDULO: VENDER + ALQUILAR ============ -->
+<div class="module" data-m="mix">
+  <header><div class="wrap">
+    <div class="eyebrow">Mezcla · vende una parte, alquila el resto</div>
+    <h1>Vende y <span class="glow">recupera</span> rápido.</h1>
+    <p class="lede">De cada lote que importas, <b>vende una parte</b> (cash inmediato + ganancia) y <b>alquila el resto</b> (ingreso recurrente). La venta te recupera el capital rápido y financia tu flota de alquiler.</p>
+  </div></header>
+  <section><div class="wrap"><div class="calc">
+    <div class="panel">
+      <div class="ctrl"><label><b>Motos compradas (lote)</b> <span class="v" id="mix_N">15</span></label><input type="range" id="mix_Nr" min="5" max="100" step="1" value="15"></div>
+      <div class="ctrl"><label><b>Costo por moto (puesta en VE)</b> <span class="v" id="mix_C">$2.000</span></label><input type="range" id="mix_Cr" min="1200" max="3000" step="50" value="2000"></div>
+      <div class="ctrl"><label><b>% que VENDES</b> <span class="v" id="mix_S">40%</span></label><input type="range" id="mix_Sr" min="0" max="100" step="5" value="40"><div class="hint">el resto lo alquilas</div></div>
+      <div class="ctrl"><label><b>Precio de VENTA por moto</b> <span class="v" id="mix_P">$2.500</span></label><input type="range" id="mix_Pr" min="1500" max="3500" step="50" value="2500"><div class="hint">premium vs OFERO ($650-1.350)</div></div>
+      <div class="ctrl"><label><b>Alquiler / mes (rentadas)</b> <span class="v" id="mix_R">$170</span></label><input type="range" id="mix_Rr" min="80" max="280" step="5" value="170"></div>
+      <div class="ctrl"><label><b>Gasto operativo / mes</b> <span class="v" id="mix_G">$50</span></label><input type="range" id="mix_Gr" min="20" max="80" step="2" value="50"></div>
+    </div>
+    <div class="panel">
+      <div class="verdict" id="mix_verdict"><span class="vi" id="mix_vi">💸</span><div><div class="vt" id="mix_vt">—</div><div class="vs" id="mix_vs">—</div></div></div>
+      <div class="bigrow">
+        <div class="bigstat"><div class="k" id="mix_invest">—</div><div class="l">Inversión total</div></div>
+        <div class="bigstat"><div class="k pos" id="mix_cash">—</div><div class="l">Cash de ventas (inmediato)</div></div>
+        <div class="bigstat"><div class="k pos" id="mix_recur">—</div><div class="l">Ingreso recurrente/mes</div></div>
+        <div class="bigstat"><div class="k pos" id="mix_profit24">—</div><div class="l">Ganancia a 24 meses</div></div>
+      </div>
+      <div class="cards3" style="margin-top:14px">
+        <div class="pcard inv"><div class="pt" style="color:var(--blue)">💸 Venta</div>
+          <div class="pl"><span class="l">Motos vendidas</span><span class="n" id="mix_sold">—</span></div>
+          <div class="pl"><span class="l">Cash inmediato</span><span class="n pos" id="mix_cash2">—</span></div>
+          <div class="pl"><span class="l">Ganancia de la venta</span><span class="n pos" id="mix_sprofit">—</span></div></div>
+        <div class="pcard op"><div class="pt" style="color:var(--lime)">🔑 Alquiler</div>
+          <div class="pl"><span class="l">Motos rentadas</span><span class="n" id="mix_rented">—</span></div>
+          <div class="pl"><span class="l">Ingreso / mes</span><span class="n pos" id="mix_recur2">—</span></div>
+          <div class="pl"><span class="l">Payback del resto</span><span class="n" id="mix_payback">—</span></div></div>
+        <div class="pcard hl"><div class="pt">📊 Combinado</div>
+          <div class="pl"><span class="l">Capital recuperado ya</span><span class="n pos" id="mix_recovpct">—</span></div>
+          <div class="pl"><span class="l">Capital neto en riesgo</span><span class="n" id="mix_netrisk">—</span></div>
+          <div class="pl"><span class="l">Payback si todo alquiler</span><span class="n neg" id="mix_purepb">—</span></div></div>
+      </div>
+    </div>
+  </div></div></section>
+</div>
+
 <footer><div class="wrap">Modelo financiero ilustrativo · USD · Venezuela 2026. Base: cotización Horwin CR1 <b>Config A</b> (doble 30Ah, disco, GPS de vehículo + Y-cable) — moto FOB $1.280, <b>~$2.000 la MOTA SOLA puesta en VE</b> (arancel ~20% en 8711.60, 0% baterías en 8507.60, a confirmar con agente aduanal). Las estaciones de swap y baterías de repuesto son <b>infraestructura compartida aparte</b> (~$5-12k del piloto), no se cargan al costo por moto. Operación a 100 km/día. Ratios de equipo/infra: supuestos de operador sénior (1 mecánico ~55 motos, 1 ops ~35, 1 hub ~70, 1 estación ~50). La curva-J y el robo son reales: contrólalos.</div></footer>
 
 <script>
@@ -525,12 +568,40 @@ function scC(){
   else{vd.className='verdict';ID('sc_vi').textContent='📈';ID('sc_vt').textContent='Crece a '+Ff+' motos en '+H+' meses';ID('sc_vs').textContent='Ganancia final '+fk(profM)+'/mes · negocio vale ~'+fk(val)+' · break-even mes '+(beMonth||'—')+'.';}
 }
 
+/* ---------- MÓDULO VENDER + ALQUILAR ---------- */
+function mixC(){
+  const N=v('mix_Nr'),C=v('mix_Cr'),S=v('mix_Sr'),P=v('mix_Pr'),R=v('mix_Rr'),G=v('mix_Gr');
+  ID('mix_N').textContent=N;ID('mix_C').textContent=f0(C);ID('mix_S').textContent=S+'%';ID('mix_P').textContent=f0(P);ID('mix_R').textContent=f0(R);ID('mix_G').textContent=f0(G);
+  const sold=Math.round(N*S/100), rented=N-sold;
+  const invest=N*C, cash=sold*P, sprofit=sold*(P-C);
+  const recur=rented*(R-G);
+  const recovpct=invest>0?cash/invest*100:0;
+  const netrisk=invest-cash;
+  const payback=recur>0?netrisk/recur:Infinity;
+  const purepb=(N*(R-G))>0?invest/(N*(R-G)):Infinity;
+  const profit24=sprofit+recur*24;
+  ID('mix_invest').textContent=f0(invest);
+  ID('mix_cash').textContent=f0(cash);
+  ID('mix_recur').textContent=f0(recur);
+  ID('mix_profit24').textContent=(profit24>=0?'+':'')+f0(profit24);
+  ID('mix_sold').textContent=sold;ID('mix_cash2').textContent=f0(cash);
+  ID('mix_sprofit').textContent=(sprofit>=0?'+':'')+f0(sprofit);ID('mix_sprofit').className='n '+(sprofit>=0?'pos':'negr');
+  ID('mix_rented').textContent=rented;ID('mix_recur2').textContent=f0(recur)+'/m';
+  ID('mix_payback').textContent=isFinite(payback)?months(payback):(rented===0?'—':'∞');
+  ID('mix_recovpct').textContent=Math.round(recovpct)+'%';
+  ID('mix_netrisk').textContent=f0(netrisk);
+  ID('mix_purepb').textContent=isFinite(purepb)?months(purepb):'—';
+  ID('mix_vt').textContent='Vendes '+sold+' · alquilas '+rented;
+  ID('mix_vs').textContent='Recuperas '+Math.round(recovpct)+'% del capital de inmediato ('+f0(cash)+') + '+f0(recur)+'/mes recurrente. El resto se paga en '+(isFinite(payback)?months(payback):'—')+(isFinite(purepb)?(' (vs '+months(purepb)+' si todo fuera alquiler).'):'.');
+}
+
 /* ---------- wiring ---------- */
 function wire(ids,fn){ids.forEach(id=>{const el=ID(id);el.addEventListener('input',()=>{paint(el);fn();});paint(el);});}
 wire(['inv_Cr','inv_Rr','inv_Gr','inv_Sr','inv_Nr','inv_Lr'],invC);
 wire(['op_Cr','op_Rr','op_Gr','op_Nr','op_Lr'],opC);
 wire(['sc_capr','sc_injr','sc_Cr','sc_Rr','sc_reinvr','sc_lossr','sc_Hr'],scC);
-invC();opC();scC();
+wire(['mix_Nr','mix_Cr','mix_Sr','mix_Pr','mix_Rr','mix_Gr'],mixC);
+invC();opC();scC();mixC();
 
 document.querySelectorAll('#switch button').forEach(b=>b.addEventListener('click',()=>{
   const m=b.dataset.m;
